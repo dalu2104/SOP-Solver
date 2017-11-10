@@ -1,3 +1,5 @@
+Best read with the "raw" option.
+
 Input: Matrix A (n x n) wobei Knoten 1 der Startknoten und Knoten n der Endknoten  
 ist. Ein Eintrag [1][n]=1000000 ist stellt unendlich dar. [i][j]= -1 genau dann,  
 wenn Knoten j vor Knoten i kommen muss.  
