@@ -6,7 +6,7 @@ import convertSOPFileToArray.parser;
 import validSolution.Simple;
 
 /**
- * Main Class. Executes the programm, lets the user choose the algorithm and
+ * Main Class. Executes the program, lets the user choose the algorithm and
  * takes the time the algorithm takes to finish.
  *
  */
@@ -27,7 +27,10 @@ public class Main {
 
 		// initialization
 		List<Integer> solution;
-		// parse the file given as an argument when the programm was exucuted
+		int cost = 0;
+		long startTime = 0;
+		long elapsedTime = 0;
+		// parse the file given as an argument when the program was executed
 		int[][] matrix = parser.parse(args[0]);
 
 		// Letting the User choose the algorithm.
@@ -36,9 +39,13 @@ public class Main {
 		System.out.println("Choose an algorithm by number:");
 		System.out.println("1 - Simple valid solution algorithm.");
 		int n = Integer.parseInt(br.readLine());
+
+		// Executing algorithm according to user and calculating execution time.
 		switch (n) {
 		case 1:
+			startTime = startTime();
 			solution = Simple.firstIdea(matrix);
+			elapsedTime = stopTime(startTime);
 			break;
 		default:
 			System.out.println("Entered invalid number");
@@ -46,8 +53,32 @@ public class Main {
 		}
 
 		// Printing the solution
-		int cost = calculateCost(matrix, solution);
-		printSolution(solution, cost);
+		cost = calculateCost(matrix, solution);
+		printSolution(solution, cost, elapsedTime);
+	}
+
+/* ________________________HELPING METHODS__________________________*/	
+	
+	/**
+	 * Stops the time and returns the execution time according to the startTime.
+	 * 
+	 * @param startTime
+	 *            Start point of measuring time.
+	 * @return The time from start to stop.
+	 */
+	private static long stopTime(long startTime) {
+		long stopTime = System.currentTimeMillis();
+		return stopTime - startTime;
+	}
+
+	/**
+	 * Registers the start time and returns it.
+	 * 
+	 * @return The start time.
+	 */
+	private static long startTime() {
+		long start = System.currentTimeMillis();
+		return start;
 	}
 
 	/**
@@ -68,8 +99,10 @@ public class Main {
 
 	/**
 	 * Prints the given solution;
+	 * 
+	 * @param elapsedTime
 	 */
-	private static void printSolution(List<Integer> solution, int cost) {
+	private static void printSolution(List<Integer> solution, int cost, long elapsedTime) {
 		System.out.println("Tour is:");
 		// 1 is always the start vertex.
 		System.out.print("1");
@@ -79,5 +112,6 @@ public class Main {
 		// n is always the end vertex.
 		System.out.print(" - " + (solution.size() + 2) + "\n");
 		System.out.println("With cost:" + cost);
+		System.out.println("In time: " + elapsedTime + "ms");
 	}
 }
