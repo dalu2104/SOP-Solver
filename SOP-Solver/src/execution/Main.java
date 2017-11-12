@@ -3,6 +3,7 @@ package execution;
 import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
+import validSolution.OneSolution;
 import validSolution.Simple;
 
 /**
@@ -38,6 +39,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(in);
 		System.out.println("Choose an algorithm by number:");
 		System.out.println("1 - Simple valid solution algorithm.");
+		System.out.println("2 - Simple greedy algorithm that finds a valid solution.");
 		int n = Integer.parseInt(br.readLine());
 
 		// Executing algorithm according to user and calculating execution time.
@@ -45,6 +47,11 @@ public class Main {
 		case 1:
 			startTime = startTime();
 			solution = Simple.firstIdea(matrix);
+			elapsedTime = stopTime(startTime);
+			break;
+		case 2:
+			startTime = startTime();
+			solution = OneSolution.findSolution(matrix);
 			elapsedTime = stopTime(startTime);
 			break;
 		default:
