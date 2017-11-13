@@ -22,6 +22,7 @@ public class recursiveBruteForce {
 	 * 			the given SOP-Instance of the TSP-Lib as matrix of edge-lengths (weights) and dependencies.
 	 * @return the perfect result as List of node-numbers. Does not contain the starting node (which is always the first)
 	 * 			and the destination (which is always the last node). They will be added by the Main-Class.
+	 * 			Therefore Nodes beginning with 2.
 	 */
 	public static List<Integer> perfectResult(int[][] weights){
 		matrix = weights;
@@ -32,6 +33,11 @@ public class recursiveBruteForce {
 		List<Integer> curPath = new ArrayList<Integer>();
 		int curLength = 0;
 		recursion(curPath, curLength);
+		//adding +1 to all paths, because the Main-method wants the node-numbers to start with 1.
+		for(int i=0; i < bestPath.size(); i++){
+			int value = bestPath.get(i).intValue() +1;
+			bestPath.set(i, value);
+		}
 		return bestPath;
 	}
 	
@@ -45,11 +51,12 @@ public class recursiveBruteForce {
 	 * 			the length the current solution path has so far.
 	 */
 	private static void recursion(List<Integer> curPath, int curLength){
-		int lastIndex = curPath.size() -1;
 		for(int i=1; i<DIM; i++){
 			if(validPath(i, curPath)){
+				if(!curPath.isEmpty()){
+					curLength += matrix[curPath.get(curPath.size()-1)][i];
+				}
 				curPath.add(i);
-				curLength += matrix[curPath.get(lastIndex)][i];
 				//checking if the solution-Path is complete.
 				//	it is complete with DIM-1 nodes (because starting point and destination have to miss)
 				if(curPath.size()<DIM-1){
