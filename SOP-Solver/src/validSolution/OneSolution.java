@@ -28,13 +28,6 @@ public class OneSolution {
 		
 		int currentNode = 0;
 		
-		//dontBuckets[i] contains all nodes which had allready been tested as next node from node i without success.
-		//they shall not picked again as the node directly after node i.
-		List<Integer>[] dontBuckets = new List[DIM];
-		for(int i=0; i<DIM; i++){
-			dontBuckets[i] = new ArrayList<Integer>();
-		}
-		
 		//putting the starting point into the solution
 		solution[solCounter] = currentNode;
 		solCounter++;
@@ -50,18 +43,15 @@ public class OneSolution {
 					if(i != currentNode){
 						//we don't want a node that we allready have in the solution-path
 						if(!inSolution(i, solution, solCounter)){
-							//if the node was allready picked at this place we don't want it again
-							//if(!dontBuckets[currentNode].contains(i)){
-								int distance = matrix[currentNode][i];
-								//now we check the dependencies
-								if(dependenciesCheck(i, solution, solCounter, matrix, DIM)){
-									//greedy: we want the shortest possible distance
-									if(distance != -1 && distance < min){
-										min = distance;
-										nextNode = i;
-									}
+							int distance = matrix[currentNode][i];
+							//now we check the dependencies
+							if(dependenciesCheck(i, solution, solCounter, matrix, DIM)){
+								//greedy: we want the shortest possible distance
+								if(distance != -1 && distance < min){
+									min = distance;
+									nextNode = i;
 								}
-							//}
+							}
 						}
 					}
 				}
@@ -69,12 +59,6 @@ public class OneSolution {
 			if(min == Integer.MAX_VALUE){
 				//no node was found to go on with. we need to go back to the last node and try again with another
 				int lastNode = solution[solCounter-1];
-				//we put this node (which didn't work out) in the dontBucket of the node we came from
-				//		because we don't want to pick it again at the same place
-				dontBuckets[lastNode].add(currentNode);
-				//we don't want to keep the don't-list of the node we now leave because everything can be different,
-				//		when we come to it again.
-				dontBuckets[currentNode].clear();
 				currentNode = lastNode;
 			} else {
 				//we can go on
