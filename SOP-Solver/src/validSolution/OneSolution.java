@@ -51,7 +51,7 @@ public class OneSolution {
 						//we don't want a node that we allready have in the solution-path
 						if(!inSolution(i, solution, solCounter)){
 							//if the node was allready picked at this place we don't want it again
-							if(!dontBuckets[currentNode].contains(i)){
+							//if(!dontBuckets[currentNode].contains(i)){
 								int distance = matrix[currentNode][i];
 								//now we check the dependencies
 								if(dependenciesCheck(i, solution, solCounter, matrix, DIM)){
@@ -61,7 +61,7 @@ public class OneSolution {
 										nextNode = i;
 									}
 								}
-							}
+							//}
 						}
 					}
 				}
