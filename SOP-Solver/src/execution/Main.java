@@ -60,7 +60,7 @@ public class Main {
 			break;
 		case 3:
 			startTime = startTime();
-			//Aufruf von Maltes erstem Algorithmus
+			solution = null; //Aufruf von Maltes erstem Algorithmus
 			elapsedTime = stopTime(startTime);
 			break;
 		case 4:
