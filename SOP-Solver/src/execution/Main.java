@@ -3,8 +3,10 @@ package execution;
 import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
+import tryAll.recursiveBruteForce;
 import validSolution.OneSolution;
 import validSolution.Simple;
+import tryAll.recursiveBruteForce;
 
 /**
  * Main Class. Executes the program, lets the user choose the algorithm and
@@ -40,6 +42,8 @@ public class Main {
 		System.out.println("Choose an algorithm by number:");
 		System.out.println("1 - Simple valid solution algorithm.");
 		System.out.println("2 - Simple greedy algorithm that finds a valid solution.");
+		System.out.println("3 - ");
+		System.out.println("4 - Recursive Brute-Force algorithm that finds the perfect result.");
 		int n = Integer.parseInt(br.readLine());
 
 		// Executing algorithm according to user and calculating execution time.
@@ -52,6 +56,16 @@ public class Main {
 		case 2:
 			startTime = startTime();
 			solution = OneSolution.findSolution(matrix);
+			elapsedTime = stopTime(startTime);
+			break;
+		case 3:
+			startTime = startTime();
+			//Aufruf von Maltes erstem Algorithmus
+			elapsedTime = stopTime(startTime);
+			break;
+		case 4:
+			startTime = startTime();
+			solution = recursiveBruteForce.perfectResult(matrix);
 			elapsedTime = stopTime(startTime);
 			break;
 		default:
