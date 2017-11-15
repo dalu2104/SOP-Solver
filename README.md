@@ -6,7 +6,7 @@ Status:
 
 TODO-Liste:
 1) Greedy oder anderes heuristisches Verfahren [DONE] && SOP-Instanzen aus der TSPLIB einlesen [DONE].
-2) Exaktes Verfahren (mit optimaler Lösung, Laufzeit egal). [CURRENT]
+2) Exaktes Verfahren (mit optimaler Lösung, Laufzeit egal). [DONE]
 3) Verbesserte Algorithmen mit besserer Laufzeit.
 
 E-mail Adresse von Alexandra= ala@...
