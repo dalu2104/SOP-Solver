@@ -40,10 +40,15 @@ public class Main {
 		InputStreamReader in = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(in);
 		System.out.println("Choose an algorithm by number:");
-		System.out.println("1 - Valid solution algorithm (Daniel).");
-		System.out.println("2 - Simple greedy algorithm (Thore).");
-		System.out.println("3 - Another simple greedy algorithm (Malte).");
-		System.out.println("4 - Recursive Brute-Force algorithm for optimal solution.");
+		
+		System.out.println("Valid solutions:");
+		System.out.println("1 - Intuitive algorithm (Daniel).");
+		System.out.println("2 - Greedy algorithm I (Thore).");
+		System.out.println("3 - Greedy algorithm II (Malte).");
+		
+		System.out.println("Optimal solution:");
+		System.out.println("4 - Recursive brute-force algorithm.");
+		
 		int n = Integer.parseInt(br.readLine());
 
 		// Executing algorithm according to user and calculating execution time.
@@ -60,7 +65,7 @@ public class Main {
 			break;
 		case 3:
 			startTime = startTime();
-			solution = GreedySOP.greedy(matrix); //Aufruf von Maltes erstem Algorithmus
+			solution = GreedySOP.greedy(matrix); 
 			elapsedTime = stopTime(startTime);
 			break;
 		case 4:
