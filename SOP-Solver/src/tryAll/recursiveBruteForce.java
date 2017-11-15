@@ -12,6 +12,10 @@ import java.util.List;
  *
  */
 public class recursiveBruteForce {
+	private static int[][] matrix;
+	private static int DIM;
+	private static List<Integer> bestPath;
+	private static int bestLength;
 	
 	/**
 	 * Finds the perfect Solution for a given SOP-Instance via the Brute-Force-Method.
@@ -143,9 +147,4 @@ public class recursiveBruteForce {
 			bestPath.add(i);
 		}
 	}
-	
-	private static int[][] matrix;
-	private static int DIM;
-	private static List<Integer> bestPath;
-	private static int bestLength;
 }
