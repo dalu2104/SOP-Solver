@@ -7,7 +7,6 @@ import tryAll.recursiveBruteForce;
 import validSolution.GreedySOP;
 import validSolution.OneSolution;
 import validSolution.Simple;
-import tryAll.recursiveBruteForce;
 
 /**
  * Main Class. Executes the program, lets the user choose the algorithm and
