@@ -40,10 +40,10 @@ public class Main {
 		InputStreamReader in = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(in);
 		System.out.println("Choose an algorithm by number:");
-		System.out.println("1 - Simple valid solution algorithm.");
-		System.out.println("2 - Simple greedy algorithm that finds a valid solution.");
-		System.out.println("3 - Another simple greedy algorithm.");
-		System.out.println("4 - Recursive Brute-Force algorithm that finds the perfect result.");
+		System.out.println("1 - Valid solution algorithm (Daniel).");
+		System.out.println("2 - Simple greedy algorithm (Thore).");
+		System.out.println("3 - Another simple greedy algorithm (Malte).");
+		System.out.println("4 - Recursive Brute-Force algorithm for optimal solution.");
 		int n = Integer.parseInt(br.readLine());
 
 		// Executing algorithm according to user and calculating execution time.
