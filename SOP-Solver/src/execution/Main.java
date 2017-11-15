@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
 import tryAll.recursiveBruteForce;
+import validSolution.GreedySOP;
 import validSolution.OneSolution;
 import validSolution.Simple;
 import tryAll.recursiveBruteForce;
@@ -42,7 +43,7 @@ public class Main {
 		System.out.println("Choose an algorithm by number:");
 		System.out.println("1 - Simple valid solution algorithm.");
 		System.out.println("2 - Simple greedy algorithm that finds a valid solution.");
-		System.out.println("3 - ");
+		System.out.println("3 - Another simple greedy algorithm.");
 		System.out.println("4 - Recursive Brute-Force algorithm that finds the perfect result.");
 		int n = Integer.parseInt(br.readLine());
 
@@ -60,7 +61,7 @@ public class Main {
 			break;
 		case 3:
 			startTime = startTime();
-			solution = null; //Aufruf von Maltes erstem Algorithmus
+			solution = GreedySOP.greedy(matrix); //Aufruf von Maltes erstem Algorithmus
 			elapsedTime = stopTime(startTime);
 			break;
 		case 4:
