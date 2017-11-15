@@ -71,19 +71,20 @@ public class recursiveBruteForce {
 						//update the best result yet
 						bestLength = curLength;
 						writeBestPath(curPath);
-						System.out.println("bestPath: " + bestPath.toString());///////////////////////////////////////print-line-debugging
-						System.out.println("bestLength: " + bestLength);///////////////////////////////////////print-line-debugging
 					}
 				}
 				curPath.remove(curPath.size()-1);
+				if(!curPath.isEmpty()){
+					curLength -= matrix[curPath.get(curPath.size()-1)][i];
+				}
 			}
 		}
 	}
 	
 	/**
 	 * Checks if adding a given node to a given solution-path can lead to a valid solution for the SOP-problem.
-	 * Contains checking if the node is not allready in the path and if all dependencies are fullfilled after adding it.
-	 * All dependencies for the node are fullfilled, if every node that has to be visited before the node to check are allready in the path.
+	 * Contains checking if the node is not already in the path and if all dependencies are fulfilled after adding it.
+	 * All dependencies for the node are fulfilled, if every node that has to be visited before the node to check are already in the path.
 	 * If node i has to be visited before the node, matrix[node][i] is -1.
 	 * Also ensures, that the first node is always the start of a path and the last node always the destination.
 	 * 
@@ -110,7 +111,7 @@ public class recursiveBruteForce {
 					//we don't want the starting point unless curPath is empty
 					result = false;
 				} else if(curPath.contains(node)){
-					//checking if the node is allready in the path
+					//checking if the node is already in the path
 					result = false;
 				} else {
 					//checking the dependencies
@@ -132,6 +133,10 @@ public class recursiveBruteForce {
 		return result;
 	}
 	
+	/** Clears and updates the bestPath variable.
+	 * 
+	 * @param curPath The path that bestPath should be when this method terminates.
+	 */
 	private static void writeBestPath(List<Integer> curPath){
 		bestPath.clear();
 		for(int i : curPath){
@@ -143,5 +148,4 @@ public class recursiveBruteForce {
 	private static int DIM;
 	private static List<Integer> bestPath;
 	private static int bestLength;
-
 }
