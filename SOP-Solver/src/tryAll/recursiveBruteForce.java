@@ -33,6 +33,9 @@ public class recursiveBruteForce {
 		List<Integer> curPath = new ArrayList<Integer>();
 		int curLength = 0;
 		recursion(curPath, curLength);
+		//we need to delete the first and the last node, because the Main-method will add them.
+		bestPath.remove(0);
+		bestPath.remove(bestPath.size()-1);
 		//adding +1 to all paths, because the Main-method wants the node-numbers to start with 1.
 		for(int i=0; i < bestPath.size(); i++){
 			int value = bestPath.get(i).intValue() +1;
@@ -51,7 +54,6 @@ public class recursiveBruteForce {
 	 * 			the length the current solution path has so far.
 	 */
 	private static void recursion(List<Integer> curPath, int curLength){
-		System.out.println(curPath.toString());///////////////////////////////////////print-line-debugging
 		for(int i=0; i<DIM; i++){
 			if(validPath(i, curPath)){
 				if(!curPath.isEmpty()){
@@ -68,7 +70,9 @@ public class recursiveBruteForce {
 					if(curLength < bestLength){
 						//update the best result yet
 						bestLength = curLength;
-						bestPath = curPath;
+						writeBestPath(curPath);
+						System.out.println("bestPath: " + bestPath.toString());///////////////////////////////////////print-line-debugging
+						System.out.println("bestLength: " + bestLength);///////////////////////////////////////print-line-debugging
 					}
 				}
 				curPath.remove(curPath.size()-1);
@@ -126,6 +130,13 @@ public class recursiveBruteForce {
 			}
 		}
 		return result;
+	}
+	
+	private static void writeBestPath(List<Integer> curPath){
+		bestPath.clear();
+		for(int i : curPath){
+			bestPath.add(i);
+		}
 	}
 	
 	private static int[][] matrix;
