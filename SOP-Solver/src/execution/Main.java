@@ -48,6 +48,7 @@ public class Main {
 		
 		System.out.println("Optimal solution:");
 		System.out.println("4 - Recursive brute-force algorithm.");
+		System.out.println("5 - Recursive brute-force algorithm II (Malte).");
 		
 		int n = Integer.parseInt(br.readLine());
 
@@ -71,6 +72,11 @@ public class Main {
 		case 4:
 			startTime = startTime();
 			solution = recursiveBruteForce.perfectResult(matrix);
+			elapsedTime = stopTime(startTime);
+			break;
+		case 5:
+			startTime = startTime();
+			solution = Permutations.checkAllPossibilities(matrix);
 			elapsedTime = stopTime(startTime);
 			break;
 		default:
