@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
 import tryAll.recursiveBruteForce;
+import tryAll.Permutations;
 import validSolution.GreedySOP;
 import validSolution.OneSolution;
 import validSolution.Simple;
