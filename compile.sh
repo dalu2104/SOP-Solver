@@ -1,5 +1,4 @@
 mkdir build
-mkdir build
 javac -d build $PWD/SOP-Solver/src/convertSOPFileToArray/parser.java
 javac -d build $PWD/SOP-Solver/src/validSolution/GreedySOP.java
 javac -d build $PWD/SOP-Solver/src/validSolution/OneSolution.java
