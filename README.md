@@ -5,7 +5,7 @@ USAGE (.bat for Windows, .sh for Linux):
 1) Download or clone the repository.
 2) Make sure that a current JDK is available in the environment variables.
 3) Compile programm with compile.bat/compile.sh  
-4) Run programm with SOP-Solver.bat/SOP-Solver.sh
+4) Run programm with SOP-Solver.bat/SOP-Solver.sh  
 [5) Undo the compilation with undoCompile.bat/undoCompile.sh.]  
 
 Status:
