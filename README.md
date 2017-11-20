@@ -1,12 +1,12 @@
 # SOP-Solver
 SOP Solver project for the Module 'Bachelorprojekt' at the group 'Algorithmen and Komplexitaet' at University of Kiel
 
-USAGE (right now, only automated windows usage is suppoted, for Linux, compile and run manually):
+USAGE (.bat for Windows, .sh for Linux):
 1) Download or clone the repository.
 2) Make sure that a current JDK is available in the environment variables.
-3) Compile programm with compile.bat.  
-4) Run programm with SOP-Solver.bat  
-[5) Undo the compilation with undoCompile.bat.]  
+3) Compile programm with compile.bat/compile.sh  
+4) Run programm with SOP-Solver.bat/SOP-Solver.sh
+[5) Undo the compilation with undoCompile.bat/undoCompile.sh.]  
 
 Status:
 - Greedy algorithms and algorithms for feasible solution have been added. Working on Algorithms with better runtime. 
