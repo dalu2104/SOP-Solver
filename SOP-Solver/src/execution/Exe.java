@@ -14,7 +14,7 @@ import validSolution.Simple;
  * takes the time the algorithm takes to finish.
  *
  */
-public class Main {
+public class Exe {
 
 	/**
 	 * Main method.
