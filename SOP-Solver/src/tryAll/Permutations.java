@@ -35,7 +35,8 @@ public class Permutations {
 	}
 
 	/**
-	 * A Method trying all combinations and save the best one.
+	 * A Method trying all combinations and save the best one. The method is inspired by the program for searching all Permutations
+	 * from "http://www2.cs.uni-paderborn.de/cs/ag-boettcher/lehrealt/swe1-w02/loesungen/A27.java"(01.12.17).
 	 * 
 	 * @param n
 	 *            The lenngth of the tour
