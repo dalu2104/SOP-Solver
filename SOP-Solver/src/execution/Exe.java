@@ -3,6 +3,7 @@ package execution;
 import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
+import simulatedAnnealing.sa;
 import tryAll.recursiveBruteForce;
 import tryAll.Permutations;
 import validSolution.GreedySOP;
@@ -43,13 +44,16 @@ public class Exe {
 		System.out.println("Choose an algorithm by number:");
 		
 		System.out.println("Valid solutions:");
-		System.out.println("1 - Intuitive algorithm (Daniel).");
-		System.out.println("2 - Greedy algorithm I (Thore).");
-		System.out.println("3 - Greedy algorithm II (Malte).");
+		System.out.println("1 - Intuitive algorithm.");
+		System.out.println("2 - Greedy algorithm I.");
+		System.out.println("3 - Greedy algorithm II.");
 		
 		System.out.println("Optimal solution:");
 		System.out.println("4 - Recursive brute-force algorithm.");
-		System.out.println("5 - Recursive brute-force algorithm II (Malte).");
+		System.out.println("5 - Recursive brute-force algorithm II.");
+		
+		System.out.println("Advanced algorithms:");
+		System.out.println("6 - Simulated Annealing.");
 		
 		int n = Integer.parseInt(br.readLine());
 
@@ -78,6 +82,11 @@ public class Exe {
 		case 5:
 			startTime = startTime();
 			solution = Permutations.checkAllPossibilities(matrix);
+			elapsedTime = stopTime(startTime);
+			break;
+		case 6:
+			startTime = startTime();
+			solution = sa.simulatedAnnealing1(matrix);
 			elapsedTime = stopTime(startTime);
 			break;
 		default:
