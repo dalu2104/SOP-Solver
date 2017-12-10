@@ -105,6 +105,14 @@ public class Exe {
 			// Printing the solution
 			cost = calculateCost(matrix, solution);
 			printSolution(solution, cost, elapsedTime);
+		
+			//continue?
+			System.out.println("Continue? y/n");
+			String str = br.readLine();
+			
+			if(!str.equals("y")){
+				return;
+			}
 		}
 	}
 
