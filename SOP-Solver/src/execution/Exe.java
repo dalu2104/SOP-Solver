@@ -92,7 +92,7 @@ public class Exe {
 				break;
 			case 6:
 				startTime = startTime();
-				solution = sa.simulatedAnnealing1(matrix);
+				solution = sa.simulatedAnnealing(matrix);
 				elapsedTime = stopTime(startTime);
 				break;
 			case 7:
