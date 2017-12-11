@@ -1,5 +1,8 @@
 mkdir build
 javac -d build "%~dp0\SOP-Solver\src\convertSOPFileToArray\parser.java"
+javac -d build "%~dp0\SOP-Solver\src\execution\TimeStartAndStop.java"
+javac -d build "%~dp0\SOP-Solver\src\simulatedAnnealing\ExecutionTimeAndSolution.java"
+
 javac -d build "%~dp0\SOP-Solver\src\validSolution\GreedySOP.java"
 javac -d build "%~dp0\SOP-Solver\src\validSolution\OneSolution.java"
 javac -d build "%~dp0\SOP-Solver\src\validSolution\Simple.java"
