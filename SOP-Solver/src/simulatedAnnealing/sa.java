@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import tryAll.Permutations;
-import tryAll.recursiveBruteForce;
-import validSolution.GreedySOP;
-import validSolution.OneSolution;
+import execution.TimeStartAndStop;
 import validSolution.Simple;
 
 /**
@@ -31,13 +28,16 @@ public class sa {
 	 * @param matrix
 	 *            Given matrix for the SOP problem.
 	 * @return A valid good solution.
-	 * @throws IOException 
-	 * @throws NumberFormatException 
+	 * @throws IOException
+	 * @throws NumberFormatException
 	 */
-	public static List<Integer> simulatedAnnealing(int[][] matrix) throws NumberFormatException, IOException {
+	public static ExecutionTimeAndSolution simulatedAnnealing(int[][] matrix) throws NumberFormatException, IOException {
 		A = matrix;
-		List<Integer> returner = null;
-
+		List<Integer> solution = null;
+		long startTime = 0;
+		long elapsedTime = 0;
+		ExecutionTimeAndSolution returner = null;
+		
 		// input prep
 		InputStreamReader in = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(in);
@@ -51,31 +51,43 @@ public class sa {
 		// time.
 		switch (n) {
 		case 1:
-			returner = simulatedAnnealing1();
+			// execution and stopping of execution time.
+			startTime = TimeStartAndStop.startTime();
+			solution = simulatedAnnealing1();
+			elapsedTime = TimeStartAndStop.stopTime(startTime);
 			break;
 		case 2:
-			//Choosing parameters
+			// Choosing parameters
 			// Temperature
 			System.out.println("Enter temperature.");
 			double temp = Double.parseDouble(br.readLine());
-			
+
 			// temperature decrement
 			System.out.println("Enter temperature decrementation.");
 			double tempDecr = Double.parseDouble(br.readLine());
-			
+
 			// iterations
 			System.out.println("Enter amount of iterations.");
 			int itera = Integer.parseInt(br.readLine());
 			
-			returner = simulatedAnnealing2(temp, tempDecr, itera);
+			//execution and stopping of execution time.
+			startTime = TimeStartAndStop.startTime();
+			solution = simulatedAnnealing2(temp, tempDecr, itera);
+			elapsedTime = TimeStartAndStop.stopTime(startTime);
 			break;
 		default:
 			System.out.println("Invalid input.");
 			return returner;
 		}
+		//preping the solution and returning it
+		returner = new ExecutionTimeAndSolution();
+		returner.setSolution(solution);
+		returner.setTimeForExecution(elapsedTime);
+		
 		return returner;
 	}
 
+	//DEFAULT MODE SA METHOD
 	/**
 	 * Default mode, no user input for parameters. Returns a optimal solution as
 	 * a list according to the given restrictions inside the matrix.
@@ -90,8 +102,8 @@ public class sa {
 		List<Integer> s0 = Simple.firstIdea(A);
 		s0 = fixIndexStart(s0);
 		List<Integer> s1 = null;
-		double T = 150;
-		int kmax = 250;
+		double T = 500;
+		int kmax = 1000;
 
 		for (int k = 0; k < kmax; k++) {
 			T = temperature(T, true, 0);
@@ -105,6 +117,7 @@ public class sa {
 		return s0;
 	}
 
+	//USER INPUT SA METHOD
 	/**
 	 * Called with user input parameters. Returns a optimal solution as a list
 	 * according to the given restrictions inside the matrix.
@@ -119,11 +132,11 @@ public class sa {
 		List<Integer> s0 = Simple.firstIdea(A);
 		s0 = fixIndexStart(s0);
 		List<Integer> s1 = null;
-		double T = 150;
-		int kmax = 250;
+		double T = userTemp;
+		int kmax = userMaxIt;
 
 		for (int k = 0; k < kmax; k++) {
-			T = temperature(T, true, 0);
+			T = temperature(T, false, userTempDecr);
 			s1 = randomNeighbour(s0);
 			if (P(cost(s0), cost(s1), T) >= generator.nextDouble()) {
 				s0 = copyList(s1);
@@ -141,23 +154,23 @@ public class sa {
 	 * Returns probability to switch to given solution S1, depending on the
 	 * temperature, cost of S0 and cost of S1.
 	 * 
-	 * @param costs0
+	 * @param cost0
 	 *            Cost of the current solution S0.
-	 * @param costs1
+	 * @param cost1
 	 *            Cost of the possible solution S1.
 	 * @param T
 	 *            Current given temperature
 	 * @return The probability.
 	 */
-	private static double P(int costs0, int costs1, double T) {
-		if (T == 0 && costs1 < costs0) {
+	private static double P(int cost0, int cost1, double T) {
+		if (T == 0 && cost1 < cost0) {
 			return 1;
 		} else if (T == 0) {
 			return 0;
-		} else if (costs1 < costs0) {
+		} else if (cost1 < cost0) {
 			return 1;
 		} else {
-			return Math.exp(-((costs1 - costs0) / T));
+			return Math.exp((cost1 - cost0) / T);
 		}
 	}
 
@@ -168,7 +181,7 @@ public class sa {
 	 * @param defaultMode
 	 * @return new temperature
 	 */
-	private static double temperature(double T, boolean defaultMode, int step) {
+	private static double temperature(double T, boolean defaultMode, double step) {
 		if (defaultMode) {
 			T--;
 		} else {

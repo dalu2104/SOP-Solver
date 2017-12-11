@@ -3,6 +3,7 @@ package execution;
 import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
+import simulatedAnnealing.ExecutionTimeAndSolution;
 import simulatedAnnealing.sa;
 import tryAll.recursiveBruteForce;
 import tryAll.Permutations;
@@ -66,34 +67,35 @@ public class Exe {
 			// time.
 			switch (n) {
 			case 1:
-				startTime = startTime();
+				startTime = TimeStartAndStop.startTime();
 				solution = Simple.firstIdea(matrix);
-				elapsedTime = stopTime(startTime);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;
 			case 2:
-				startTime = startTime();
+				startTime = TimeStartAndStop.startTime();
 				solution = OneSolution.findSolution(matrix);
-				elapsedTime = stopTime(startTime);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;
 			case 3:
-				startTime = startTime();
+				startTime = TimeStartAndStop.startTime();
 				solution = GreedySOP.greedy(matrix);
-				elapsedTime = stopTime(startTime);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;
 			case 4:
-				startTime = startTime();
+				startTime = TimeStartAndStop.startTime();
 				solution = recursiveBruteForce.perfectResult(matrix);
-				elapsedTime = stopTime(startTime);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;
 			case 5:
-				startTime = startTime();
+				startTime = TimeStartAndStop.startTime();
 				solution = Permutations.checkAllPossibilities(matrix);
-				elapsedTime = stopTime(startTime);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;
 			case 6:
-				startTime = startTime();
-				solution = sa.simulatedAnnealing(matrix);
-				elapsedTime = stopTime(startTime);
+				//Time tracking for SA happens internally, due to expanded user input.
+				ExecutionTimeAndSolution saSol = sa.simulatedAnnealing(matrix);
+				solution = saSol.getSolution();
+				elapsedTime = saSol.getTimeForExecution();
 				break;
 			case 7:
 				return;
@@ -117,29 +119,6 @@ public class Exe {
 	}
 
 	/* ________________________HELPING METHODS__________________________ */
-
-	/**
-	 * Stops the time and returns the execution time according to the startTime.
-	 * 
-	 * @param startTime
-	 *            Start point of measuring time.
-	 * @return The time from start to stop.
-	 */
-	private static long stopTime(long startTime) {
-		long stopTime = System.currentTimeMillis();
-		return stopTime - startTime;
-	}
-
-	/**
-	 * Registers the start time and returns it.
-	 * 
-	 * @return The start time.
-	 */
-	private static long startTime() {
-		long start = System.currentTimeMillis();
-		return start;
-	}
-
 	/**
 	 * Calculates the cost of the given solution with the given matrix.
 	 * Excluding the Start and Stop vertex.
