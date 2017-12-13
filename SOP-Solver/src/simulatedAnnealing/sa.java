@@ -170,7 +170,7 @@ public class sa {
 		} else if (cost1 < cost0) {
 			return 1;
 		} else {
-			return Math.exp((cost1 - cost0) / T);
+			return Math.exp((cost0 - cost1) / T);
 		}
 	}
 
@@ -184,7 +184,9 @@ public class sa {
 	private static double temperature(double T, boolean defaultMode, double step) {
 		if (defaultMode) {
 			T--;
-		} else {
+		} else if(T==0){
+			return T;
+		} else{
 			T -= step;
 		}
 		return T;
