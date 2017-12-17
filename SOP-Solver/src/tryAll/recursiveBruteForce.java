@@ -30,7 +30,6 @@ public class recursiveBruteForce {
 	 */
 	public static List<Integer> perfectResult(int[][] weights){
 		matrix = weights;
-		//the dimension without the destination
 		DIM = weights[0].length;
 		bestPath = new ArrayList<Integer>();
 		bestLength = Integer.MAX_VALUE;
