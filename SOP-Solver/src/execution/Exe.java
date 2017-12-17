@@ -3,6 +3,8 @@ package execution;
 import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
+import simulatedAnnealing.ExecutionTimeAndSolution;
+import simulatedAnnealing.sa;
 import tryAll.recursiveBruteForce;
 import tryAll.Permutations;
 import validSolution.GreedySOP;
@@ -36,84 +38,87 @@ public class Exe {
 		long elapsedTime = 0;
 		// parse the file given as an argument when the program was executed
 		int[][] matrix = parser.parse(args[0]);
+		
+		
+		while (true) {
+			// Letting the User choose the algorithm.
+			InputStreamReader in = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(in);
+			System.out.println("Choose an algorithm by number:");
 
-		// Letting the User choose the algorithm.
-		InputStreamReader in = new InputStreamReader(System.in);
-		BufferedReader br = new BufferedReader(in);
-		System.out.println("Choose an algorithm by number:");
-		
-		System.out.println("Valid solutions:");
-		System.out.println("1 - Intuitive algorithm (Daniel).");
-		System.out.println("2 - Greedy algorithm I (Thore).");
-		System.out.println("3 - Greedy algorithm II (Malte).");
-		
-		System.out.println("Optimal solution:");
-		System.out.println("4 - Recursive brute-force algorithm.");
-		System.out.println("5 - Recursive brute-force algorithm II (Malte).");
-		
-		int n = Integer.parseInt(br.readLine());
+			System.out.println("Valid solutions:");
+			System.out.println("1 - Intuitive algorithm.");
+			System.out.println("2 - Greedy algorithm I.");
+			System.out.println("3 - Greedy algorithm II.");
 
-		// Executing algorithm according to user and calculating execution time.
-		switch (n) {
-		case 1:
-			startTime = startTime();
-			solution = Simple.firstIdea(matrix);
-			elapsedTime = stopTime(startTime);
-			break;
-		case 2:
-			startTime = startTime();
-			solution = OneSolution.findSolution(matrix);
-			elapsedTime = stopTime(startTime);
-			break;
-		case 3:
-			startTime = startTime();
-			solution = GreedySOP.greedy(matrix); 
-			elapsedTime = stopTime(startTime);
-			break;
-		case 4:
-			startTime = startTime();
-			solution = recursiveBruteForce.perfectResult(matrix);
-			elapsedTime = stopTime(startTime);
-			break;
-		case 5:
-			startTime = startTime();
-			solution = Permutations.checkAllPossibilities(matrix);
-			elapsedTime = stopTime(startTime);
-			break;
-		default:
-			System.out.println("Entered invalid number");
-			return;
+			System.out.println("Optimal solution:");
+			System.out.println("4 - Recursive brute-force algorithm.");
+			System.out.println("5 - Recursive brute-force algorithm II.");
+
+			System.out.println("Advanced algorithms:");
+			System.out.println("6 - Simulated Annealing.");
+
+			System.out.println("Other options:");
+			System.out.println("7 - Exit programm.");
+
+			int n = Integer.parseInt(br.readLine());
+
+			// Executing algorithm according to user and calculating execution
+			// time.
+			switch (n) {
+			case 1:
+				startTime = TimeStartAndStop.startTime();
+				solution = Simple.firstIdea(matrix);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
+				break;
+			case 2:
+				startTime = TimeStartAndStop.startTime();
+				solution = OneSolution.findSolution(matrix);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
+				break;
+			case 3:
+				startTime = TimeStartAndStop.startTime();
+				solution = GreedySOP.greedy(matrix);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
+				break;
+			case 4:
+				startTime = TimeStartAndStop.startTime();
+				solution = recursiveBruteForce.perfectResult(matrix);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
+				break;
+			case 5:
+				startTime = TimeStartAndStop.startTime();
+				solution = Permutations.checkAllPossibilities(matrix);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
+				break;
+			case 6:
+				//Time tracking for SA happens internally, due to expanded user input.
+				ExecutionTimeAndSolution saSol = sa.simulatedAnnealing(matrix);
+				solution = saSol.getSolution();
+				elapsedTime = saSol.getTimeForExecution();
+				break;
+			case 7:
+				return;
+			default:
+				System.out.println("Entered invalid number");
+				return;
+			}
+
+			// Printing the solution
+			cost = calculateCost(matrix, solution);
+			printSolution(solution, cost, elapsedTime);
+		
+			//continue?
+			System.out.println("Continue? y/n");
+			String str = br.readLine();
+			
+			if(!str.equals("y")){
+				return;
+			}
 		}
-
-		// Printing the solution
-		cost = calculateCost(matrix, solution);
-		printSolution(solution, cost, elapsedTime);
 	}
 
-/* ________________________HELPING METHODS__________________________*/	
-	
-	/**
-	 * Stops the time and returns the execution time according to the startTime.
-	 * 
-	 * @param startTime
-	 *            Start point of measuring time.
-	 * @return The time from start to stop.
-	 */
-	private static long stopTime(long startTime) {
-		long stopTime = System.currentTimeMillis();
-		return stopTime - startTime;
-	}
-
-	/**
-	 * Registers the start time and returns it.
-	 * 
-	 * @return The start time.
-	 */
-	private static long startTime() {
-		long start = System.currentTimeMillis();
-		return start;
-	}
-
+	/* ________________________HELPING METHODS__________________________ */
 	/**
 	 * Calculates the cost of the given solution with the given matrix.
 	 * Excluding the Start and Stop vertex.
