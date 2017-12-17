@@ -3,6 +3,7 @@ package execution;
 import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
+import genetic.StartGenAlg;
 import simulatedAnnealing.ExecutionTimeAndSolution;
 import simulatedAnnealing.sa;
 import tryAll.recursiveBruteForce;
@@ -57,9 +58,10 @@ public class Exe {
 
 			System.out.println("Advanced algorithms:");
 			System.out.println("6 - Simulated Annealing.");
+			System.out.println("7 - Genetic Algorithm.");
 
 			System.out.println("Other options:");
-			System.out.println("7 - Exit programm.");
+			System.out.println("8 - Exit programm.");
 
 			int n = Integer.parseInt(br.readLine());
 
@@ -98,6 +100,16 @@ public class Exe {
 				elapsedTime = saSol.getTimeForExecution();
 				break;
 			case 7:
+				startTime = TimeStartAndStop.startTime();
+				solution = StartGenAlg.runAlg(matrix);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
+				if(solution == null){
+					//the algorithm did not find a valid solution (maybe there is none)
+					System.out.println("The Algorithm didn't find a valid solution in Time: " + elapsedTime + "ms.");
+					return;
+				}
+				break;
+			case 8:
 				return;
 			default:
 				System.out.println("Entered invalid number");
