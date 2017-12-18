@@ -44,6 +44,8 @@ public class StartGenAlg {
 				if(UsefulMethods.compareSolutions(aSolution, bestSolution, matrix)){
 					UsefulMethods.copyPath(aSolution, bestSolution);
 				}
+			} else {
+				System.out.println("aSolution == null");//TODO delete
 			}
 		}
 		if(bestSolution[0] == 0){

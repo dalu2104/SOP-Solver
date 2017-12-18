@@ -1,5 +1,6 @@
 package genetic;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,12 +23,12 @@ public class GenAlg {
 	/**
 	 * The size of each Generation.
 	 */
-	private static final int GEN_SIZE = dim;
+	private static int genSize;
 	
 	/**
 	 * Number of iterations and also generations.
 	 */
-	private static final int ITERATIONS = 50 + dim;
+	private static int iterations;
 	
 	/**
 	 * The chance that a node in a candidate will mutate.
@@ -41,11 +42,12 @@ public class GenAlg {
 	private static int[] bestRunSolution;
 	
 	/**
-	 * Saves the length of the shortest possible path through the graph. The path doesn't need to be a valid solution for the problem.
-	 * The value is stored to get a constant value that scales with the lengths of the edges in the given instance.
-	 * It is used in the fitness-function.
+	 * The sum of the shortest value of each column (without 0 and -1).
+	 * It is used in the fitness function to get a constant value which scales with the length
+	 * 		of the edges in the given instance.
+	 * Note that it should be shorter than every actual path through the graph.
 	 */
-	private static int shortestPathLength;
+	private static int shortDistance;
 	
 	/**
 	 * Scales the modification on the fitness-value of a path, if it is a valid solution.
@@ -68,13 +70,17 @@ public class GenAlg {
 	 */
 	public static int[] geneticSOP(int[][] matrix){
 		
+		System.out.println("Run-Start"); //TODO delete
 		dim = matrix[0].length-2;	//TODO vorher war da -1
-		shortestPathLength = calculateShortestPathLength(matrix);
+		genSize = dim;
+		iterations = 50 + dim;
+		shortDistance = calculateShortDistance(matrix);
+		System.out.println("shortestDistance: " + shortDistance);//TODO delete
 		
-		int[][] generation = new int[GEN_SIZE][dim];
+		int[][] generation = new int[genSize][dim];
 		
 		//generate the starting-generation
-		for(int i=0; i < GEN_SIZE; i++){
+		for(int i=0; i < genSize; i++){
 			//generating dim numbers that go from 1 to dim (second border is excluding)
 			generation[i] = random.ints(dim, 1, dim+1).toArray();	//TODO vorher war hier dim und in den comments dim-1
 			//exchange nodes that are multiple times in the path with nodes that are missing
@@ -84,7 +90,8 @@ public class GenAlg {
 		
 		//starting an iteration.
 		//each iteration includes rating the current generation and generating a new generation via crossing and mutation.
-		for(int iteration=0; iteration < ITERATIONS; iteration++){
+		for(int iteration=0; iteration < iterations; iteration++){
+			System.out.println("Generation: ");//TODO delete
 			//rating the generation
 			double[] fitness = rateGeneration(generation, matrix);
 			//summing up all fitness-ratings of the candidates of the current generation.
@@ -95,8 +102,9 @@ public class GenAlg {
 			}
 			
 			//creating a new generation via crossing GEN_SIZE selected pairs and mutation
-			int[][] newGeneration = new int[GEN_SIZE][dim];
-			for(int pair=0; pair < GEN_SIZE; pair++){
+			int[][] newGeneration = new int[genSize][dim];
+			for(int pair=0; pair < genSize; pair++){
+				System.out.println("pair: " + pair);//TODO delete
 				//selecting a pair of 2 candidates. both candidates can also be the same candidate.
 				int candidate1 = selectCandidate(generation, fitness, overallFitness);
 				int candidate2 = selectCandidate(generation, fitness, overallFitness);
@@ -159,25 +167,27 @@ public class GenAlg {
 	 * 			Fitness-values are always positive. The greatest fitness-value is the best.
 	 */
 	private static double[] rateGeneration(int[][] generation, int[][] matrix){
-		double[] fitness = new double[GEN_SIZE];
+		double[] fitness = new double[genSize];
 		
-		/*	current Fitness-function is:  length of the shortest path
+		/*	current Fitness-function is:  		shortDistance
 		 * 								 -----------------------------     * C 
 		 * 								  length of the path to rate      |----| -> only if the path is valid
 		 */
 		
-		for(int path = 0; path < GEN_SIZE; path++){
+		for(int path = 0; path < genSize; path++){
 			if(isValid(generation[path], matrix)){
+				System.out.println("rateGeneration: Valid found"); //TODO delete
 				//the path is a valid solution for the SOP-instance
-				fitness[path] = (double)(shortestPathLength / UsefulMethods.pathLength(generation[path], matrix) * C);
+				fitness[path] = (double) shortDistance / UsefulMethods.pathLength(generation[path], matrix) * C;
 				if(UsefulMethods.compareSolutions(generation[path], bestRunSolution, matrix)){
 					//a new best path was found
 					UsefulMethods.copyPath(generation[path], bestRunSolution);
 				}
 			} else {
 				//the path is not a valid solution
-				fitness[path] = (double)(shortestPathLength / UsefulMethods.pathLength(generation[path], matrix));
+				fitness[path] = (double) shortDistance / UsefulMethods.pathLength(generation[path], matrix);
 			}
+			System.out.println("Path: "+goString(generation[path])+", Rating: "+fitness[path]);//TODO delete
 		}
 		return fitness;
 	}
@@ -194,15 +204,18 @@ public class GenAlg {
 	 * @return a selected candidate, defined by its index in generation.
 	 */
 	private static int selectCandidate(int[][] generation, double[] fitness, double overallFitness){
-		double randomNum = random.doubles(1, 0, overallFitness+1).findFirst().getAsDouble();
-		double sum = 0;
-		for(int candidate = 0; candidate < GEN_SIZE; candidate++){
+		double randomNum = random.nextDouble() * overallFitness;
+		System.out.println("overallFitness: " + overallFitness +", randomNum: "+randomNum);//TODO delete
+		double sum = 0.0;
+		for(int candidate = 0; candidate < genSize; candidate++){
 			sum += fitness[candidate];
 			if(sum >= randomNum){
+				System.out.println("SelectedCandidate: " + candidate);//TODO delete
 				return candidate;
 			}
 		}
 		//should never be reached
+		System.out.println("Is definetly reached!");//TODO delete
 		return 0;
 	}
 	
@@ -268,30 +281,37 @@ public class GenAlg {
 	/**
 	 * Exchanges nodes that are in a given path multiple times through nodes that are missing.
 	 * Afterwards every node is in the path exactly once.
+	 * Sorts out nodes that mutated over the normal node-range. For example if dim = 7 there should only be
+	 * 		nodes from 1 to 7 in the path. But a node of 7 can mutate to 8 and a node of 1 can mutate to 0.
+	 * 		Therefore these nodes will be exchanged here as well.
 	 * 
 	 * @param path
 	 * 			the path to delete multiple nodes from.
 	 */
 	private static void deleteMults(int[] path){
-		//howManyTimes[i] saves how many times node i is in the given path.
-		int[] howManyTimes = new int[dim+1];
+		//howManyTimes[i] saves how many times node i is in the given path. note that there can be the node
+		//		path.length +1 because the normally highest node (which should be path.length) can mutate.
+		int[] howManyTimes = new int[path.length +2];
 		for(int i=0; i < path.length; i++){
-			howManyTimes[path[i]]++;
+			howManyTimes[path[i]] = howManyTimes[path[i]] +1;
 		}
 		//saving the missing nodes in a list (starting with node 1 because node 0 is the starting point and
 		//		not featured in the solution-paths)
 		List<Integer> missingNodes = new ArrayList<Integer>();
-		for(int i=1; i < howManyTimes.length; i++){
+		for(int i=1; i < howManyTimes.length -1; i++){
+			//we leave out the starting node (with index 0) and the last index (path.length+1) which is only
+			//		there by failure mutation
 			if(howManyTimes[i] == 0){
 				missingNodes.add(i);
 			}
 		}
 		if(!missingNodes.isEmpty()){
 			//there are nodes missing and other nodes are multiple times in the path
-			boolean[] allready = new boolean[dim+1];
+			boolean[] allready = new boolean[path.length +2];
 			for(int i=0; i < path.length; i++){
-				if(allready[path[i]]){
-					//the node is allready in the path before the current position (index i)
+				if(allready[path[i]] || path[i] > path.length || path[i] == 0){
+					//the node is allready in the path before the current position (index i) or too big or too small
+					//		because of mutation
 					//the node path[i] is replaced by the first node in the list of the missing nodes
 					path[i] = missingNodes.remove(0);
 				} else {
@@ -303,43 +323,36 @@ public class GenAlg {
 	}
 	
 	/**
-	 * Calculates the length of the shortest path from the starting point to the destination in the given instance.
-	 * The path is not necessarily a valid solution for the SOP-problem.
-	 * Implements Dijkstras Algorithm (Source: "Algorithmen und Datenstrukturen"-Lecture by professor Jansen, 2015).
+	 * Calculates the sum of the shortest value of each column (without 0 and -1).
 	 * 
 	 * @param matrix
 	 * 			the given instance of the SOP-problem.
-	 * @return the length of the shortest path.
+	 * @return a sum of short edges in the graph.
+	 * 			Note that it should be shorter than every actual path through the graph.
 	 */
-	private static int calculateShortestPathLength(int[][] matrix){
+	private static int calculateShortDistance(int[][] matrix){
 		int result = 0;
-		int n = matrix[0].length;
-		List<Integer> path = new ArrayList<Integer>();
-		path.add(0);
-		List<Integer> notInPath = new ArrayList<Integer>();
-		int[] distances = new int[n];
-		for(int i=1; i < n; i++){
-			notInPath.add(i);
-			distances[i] = matrix[0][i];
-		}
-		while(path.size() != n){
-			int k = 0;
+		int allDim = matrix[0].length;
+		for(int i=0; i < allDim; i++){
 			int min = Integer.MAX_VALUE;
-			for(int i=0; i < distances.length; i++){
-				if(distances[i] < min && notInPath.contains(i)){
-					k = i;
-					min = distances[i];
+			for(int j=0; j < allDim; j++){
+				int value = matrix[i][j];
+				if(value != -1 && value != 0 && value < min){
+					min = value;
 				}
 			}
-			path.add(k);
-			notInPath.remove((Integer) k);
-			result += min;
-			for(int j : notInPath){
-				int newDistance = min + matrix[k][j];
-				if(newDistance < distances[j]){
-					distances[j] = newDistance;
-				}
+			if(min != Integer.MAX_VALUE){
+				result += min;
 			}
+		}
+		return result;
+	}
+	
+	//TODO delete
+	private static String goString(int[] array){
+		String result = "";
+		for(int i=0; i < array.length; i++){
+			result += array[i];
 		}
 		return result;
 	}
