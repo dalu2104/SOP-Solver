@@ -4,6 +4,7 @@ SOP Solver project for the Module 'Bachelorprojekt' at the group 'Algorithmen an
 USAGE (.bat for Windows, .sh for Linux):
 1) Download or clone the repository.
 2) Make sure that a current JDK is available in the environment variables.
+3) On Linux, make sure you have execution rights for the script files. If not, execute `chmod 711 *.sh`.
 3) Compile programm with compile.bat/compile.sh  
 4) Run programm with SOP-Solver.bat/SOP-Solver.sh  
 [5) Undo the compilation with undoCompile.bat/undoCompile.sh.]  
