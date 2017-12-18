@@ -121,7 +121,7 @@ public class Exe {
 			printSolution(solution, cost, elapsedTime);
 		
 			//continue?
-			System.out.println("Continue? y/n");
+			System.out.println("Continue with another algorithm? y/n");
 			String str = br.readLine();
 			
 			if(!str.equals("y")){
