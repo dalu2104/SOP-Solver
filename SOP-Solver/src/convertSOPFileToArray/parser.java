@@ -5,13 +5,22 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * Offers a method, that converts a given .SOP file into an array.
- * Currently only supports TSPLIB.
+ * Offers a method, that converts a given .SOP file into an array. Currently
+ * only supports TSPLIB.
+ * 
  * @author D. LUCAS
  *
  */
 public class parser {
-	
+	/* README!:
+	 * Wenn man eine eigene Testinstanz schreiben möchte, sie die Felder
+	 * DIMENSION: und EDGE_WEIGHT_SECTION mit anhängendem Zahlenwert nötig.
+	 * DIMENSION muss hier der Größe der Testinstanz entsprechen. Die
+	 * Reihenfolge ist zu beachten! Die eigentliche Testinstanz ist dann als
+	 * Matrix einzufügen.
+	 * 
+	 */
+
 	/**
 	 * 
 	 * @param pathString
