@@ -17,4 +17,3 @@ javac -d build -cp build "%~dp0\SOP-Solver\src\genetic\GenAlg.java"
 javac -d build -cp build "%~dp0\SOP-Solver\src\genetic\StartGenAlg.java"
 
 javac -d build -cp build "%~dp0\SOP-Solver\src\execution\Exe.java"
-PAUSE
