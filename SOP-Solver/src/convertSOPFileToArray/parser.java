@@ -13,11 +13,11 @@ import java.util.Scanner;
  */
 public class parser {
 	/* README!:
-	 * Wenn man eine eigene Testinstanz schreiben möchte, sie die Felder
-	 * DIMENSION: und EDGE_WEIGHT_SECTION mit anhängendem Zahlenwert nötig.
-	 * DIMENSION muss hier der Größe der Testinstanz entsprechen. Die
+	 * Wenn man eine eigene Testinstanz schreiben moechte, sie die Felder
+	 * DIMENSION: und EDGE_WEIGHT_SECTION mit anhaengendem Zahlenwert noetig.
+	 * DIMENSION muss hier der Groesse der Testinstanz entsprechen. Die
 	 * Reihenfolge ist zu beachten! Die eigentliche Testinstanz ist dann als
-	 * Matrix einzufügen.
+	 * Matrix einzufuegen.
 	 * 
 	 */
 
