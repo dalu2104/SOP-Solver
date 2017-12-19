@@ -31,13 +31,14 @@ public class sa {
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 */
-	public static ExecutionTimeAndSolution simulatedAnnealing(int[][] matrix) throws NumberFormatException, IOException {
+	public static ExecutionTimeAndSolution simulatedAnnealing(int[][] matrix)
+			throws NumberFormatException, IOException {
 		A = matrix;
 		List<Integer> solution = null;
 		long startTime = 0;
 		long elapsedTime = 0;
 		ExecutionTimeAndSolution returner = null;
-		
+
 		// input prep
 		InputStreamReader in = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(in);
@@ -69,8 +70,8 @@ public class sa {
 			// iterations
 			System.out.println("Enter amount of iterations.");
 			int itera = Integer.parseInt(br.readLine());
-			
-			//execution and stopping of execution time.
+
+			// execution and stopping of execution time.
 			startTime = TimeStartAndStop.startTime();
 			solution = simulatedAnnealing2(temp, tempDecr, itera);
 			elapsedTime = TimeStartAndStop.stopTime(startTime);
@@ -79,15 +80,15 @@ public class sa {
 			System.out.println("Invalid input.");
 			return returner;
 		}
-		//preping the solution and returning it
+		// preping the solution and returning it
 		returner = new ExecutionTimeAndSolution();
 		returner.setSolution(solution);
 		returner.setTimeForExecution(elapsedTime);
-		
+
 		return returner;
 	}
 
-	//DEFAULT MODE SA METHOD
+	// DEFAULT MODE SA METHOD
 	/**
 	 * Default mode, no user input for parameters. Returns a optimal solution as
 	 * a list according to the given restrictions inside the matrix.
@@ -117,7 +118,7 @@ public class sa {
 		return s0;
 	}
 
-	//USER INPUT SA METHOD
+	// USER INPUT SA METHOD
 	/**
 	 * Called with user input parameters. Returns a optimal solution as a list
 	 * according to the given restrictions inside the matrix.
@@ -178,15 +179,18 @@ public class sa {
 	 * Decrements the temperature T.
 	 * 
 	 * @param T
+	 *            Given temperature to decrement.
 	 * @param defaultMode
-	 * @return new temperature
+	 *            Switch that tells us whether or not this method is called in
+	 *            default mode. True for dedault mode and false otherwise.
+	 * @return decremented temperature
 	 */
 	private static double temperature(double T, boolean defaultMode, double step) {
 		if (defaultMode) {
 			T--;
-		} else if(T==0){
+		} else if (T == 0) {
 			return T;
-		} else{
+		} else {
 			T -= step;
 		}
 		return T;
@@ -198,7 +202,6 @@ public class sa {
 	 * 
 	 * @param s0
 	 *            Given valid solution for SOP problem.
-	 * @param matrix
 	 * @return A valid neighbor of the given list.
 	 */
 	private static List<Integer> randomNeighbour(List<Integer> s0) {
@@ -275,7 +278,7 @@ public class sa {
 	 *            Given list.
 	 * @param r
 	 *            Given index.
-	 * @return The list witht the switched vertices.
+	 * @return The list with the switched vertices.
 	 */
 	private static List<Integer> switchLower(List<Integer> s0, int r) {
 		int temp = s0.get(r - 1);
@@ -326,7 +329,9 @@ public class sa {
 	}
 
 	/**
-	 * Decrement indexes due to given solution.
+	 * Decrement indexes due to given solution. Solutions contains the vertices
+	 * with the logical indices starting at 0 for the array, that contains
+	 * information about the dependencies.
 	 */
 	private static List<Integer> fixIndexStart(List<Integer> s0) {
 		for (int i = 0; i < s0.size(); i++) {
@@ -338,7 +343,8 @@ public class sa {
 	}
 
 	/**
-	 * Increment indexes due to expected solution in main.
+	 * Increment indexes due to expected solution in main. Solution expects the
+	 * logical indices of the vertices, starting at one.
 	 */
 	private static List<Integer> fixIndexEnd(List<Integer> s0) {
 		for (int i = 0; i < s0.size(); i++) {
