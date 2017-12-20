@@ -34,7 +34,7 @@ public class StartGenAlg {
 	 * 			Therefore contains integers higher or equal than 2.
 	 */
 	public static List<Integer> runAlg(int[][] matrix){
-		int dim = matrix[0].length -2; //TODO vorher -1
+		int dim = matrix[0].length -2;
 		//for explanation of the decrement see GenAlg.dim
 		bestSolution = new int[dim];
 		for(int run=0; run < RUNS; run++){
@@ -44,8 +44,6 @@ public class StartGenAlg {
 				if(UsefulMethods.compareSolutions(aSolution, bestSolution, matrix)){
 					UsefulMethods.copyPath(aSolution, bestSolution);
 				}
-			} else {
-				System.out.println("aSolution == null");//TODO delete
 			}
 		}
 		if(bestSolution[0] == 0){
