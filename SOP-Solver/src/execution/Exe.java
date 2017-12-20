@@ -3,6 +3,7 @@ package execution;
 import java.io.*;
 import java.util.List;
 import convertSOPFileToArray.parser;
+import dynamicProgramming.DynamicSOP;
 import genetic.StartGenAlg;
 import simulatedAnnealing.ExecutionTimeAndSolution;
 import simulatedAnnealing.sa;
@@ -59,9 +60,10 @@ public class Exe {
 			System.out.println("Advanced algorithms:");
 			System.out.println("6 - Simulated Annealing.");
 			System.out.println("7 - Genetic Algorithm.");
+			System.out.println("8 - Dynamic Programming.");
 
 			System.out.println("Other options:");
-			System.out.println("8 - Exit programm.");
+			System.out.println("9 - Exit programm.");
 
 			int n = Integer.parseInt(br.readLine());
 
@@ -110,6 +112,11 @@ public class Exe {
 				}
 				break;
 			case 8:
+				startTime = TimeStartAndStop.startTime();
+				solution = DynamicSOP.solveDynamic(matrix);
+				elapsedTime = TimeStartAndStop.stopTime(startTime);
+				break;		
+			case 9:
 				return;
 			default:
 				System.out.println("Entered invalid number");
