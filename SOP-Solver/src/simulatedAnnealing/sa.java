@@ -94,8 +94,7 @@ public class sa {
 	 * Default mode, no user input for parameters. Returns a optimal solution as
 	 * a list according to the given restrictions inside the matrix.
 	 * 
-	 * @return An optimal tour as List of Integers corresponding to the vertices
-	 *         in the matrix.
+	 * @return An tour with minimal costs, as found in the process of Simulated Annealing.
 	 */
 	private static List<Integer> simulatedAnnealing1() {
 		// in Order to start, we need a valid solution
@@ -105,16 +104,22 @@ public class sa {
 		List<Integer> s1 = null;
 		double T = 500;
 		int kmax = 1000;
+		//saves the global best solution.
+		List<Integer> bestSolution = copyList(s0);
 
 		for (int k = 0; k < kmax; k++) {
 			T = temperature(T, true, 0);
 			s1 = randomNeighbour(s0);
 			if (P(cost(s0), cost(s1), T) >= generator.nextDouble()) {
 				s0 = copyList(s1);
+				// if new solution is better as best one we have had so far, we safe it as our global best.
+				if(cost(s0) < cost(bestSolution)){
+					bestSolution = copyList(s0);
+				}
 			}
 		}
 
-		return s0;
+		return bestSolution;
 	}
 
 	// USER INPUT SA METHOD
@@ -122,8 +127,7 @@ public class sa {
 	 * Called with user input parameters. Returns a optimal solution as a list
 	 * according to the given restrictions inside the matrix.
 	 * 
-	 * @return An optimal tour as List of Integers corresponding to the vertices
-	 *         in the matrix.
+	 * @return An tour with minimal costs, as found in the process of Simulated Annealing.
 	 */
 	private static List<Integer> simulatedAnnealing2(double userTemp, double userTempDecr, int userMaxIt) {
 		// in Order to start, we need a valid solution
@@ -133,17 +137,23 @@ public class sa {
 		List<Integer> s1 = null;
 		double T = userTemp;
 		int kmax = userMaxIt;
+		// saves the global best solution.
+		List<Integer> bestSolution = copyList(s0);
 
 		for (int k = 0; k < kmax; k++) {
 			T = temperature(T, false, userTempDecr);
 			s1 = randomNeighbour(s0);
 			if (P(cost(s0), cost(s1), T) >= generator.nextDouble()) {
 				s0 = copyList(s1);
+				// if new solution is better as best one we have had so far, we safe it as our global best.
+				if(cost(s0) < cost(bestSolution)){
+					bestSolution = copyList(s0);
+				}
 			}
 		}
 
 
-		return s0;
+		return bestSolution;
 	}
 
 	/*
