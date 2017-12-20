@@ -1,4 +1,4 @@
-package simulatedAnnealing;
+package execution;
 
 import java.util.List;
 
@@ -9,21 +9,22 @@ import java.util.List;
  * @author Daniel Lucas
  *
  */
-public class ExecutionTimeAndSolution {
+public class ExeTimeSolutionCost {
 	private long timeForExecution;
 	private List<Integer> solution;
+	private int cost;
 
 	/**
 	 * Default Constructor.
 	 */
-	public ExecutionTimeAndSolution() {
+	public ExeTimeSolutionCost() {
 	}
 
 	/**
 	 * Private constructor.
 	 */
 	@SuppressWarnings("unused")
-	private ExecutionTimeAndSolution(long timeForExecution, List<Integer> solution) {
+	private ExeTimeSolutionCost(long timeForExecution, List<Integer> solution, int cost) {
 
 	}
 
@@ -65,5 +66,21 @@ public class ExecutionTimeAndSolution {
 	 */
 	public void setSolution(List<Integer> solution) {
 		this.solution = solution;
+	}
+	
+	/** Gets the cost for the solution in this object.
+	 * 
+	 * @return	Cost of the tour saved in solution.
+	 */
+	public int getCost() {
+		return cost;
+	}
+
+	/**  Sets cost for this solution in this specified object.
+	 * 
+	 * @param cost The cost of the solution.
+	 */
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 }
