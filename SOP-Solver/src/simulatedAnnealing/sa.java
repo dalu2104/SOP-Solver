@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import execution.ExeTimeSolutionCost;
 import execution.TimeStartAndStop;
 import validSolution.Simple;
 
@@ -31,13 +32,13 @@ public class sa {
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 */
-	public static ExecutionTimeAndSolution simulatedAnnealing(int[][] matrix)
+	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix)
 			throws NumberFormatException, IOException {
 		A = matrix;
 		List<Integer> solution = null;
 		long startTime = 0;
 		long elapsedTime = 0;
-		ExecutionTimeAndSolution returner = null;
+		ExeTimeSolutionCost returner = null;
 
 		// input prep
 		InputStreamReader in = new InputStreamReader(System.in);
@@ -81,7 +82,7 @@ public class sa {
 			return returner;
 		}
 		// preping the solution and returning it
-		returner = new ExecutionTimeAndSolution();
+		returner = new ExeTimeSolutionCost();
 		returner.setSolution(solution);
 		returner.setTimeForExecution(elapsedTime);
 
