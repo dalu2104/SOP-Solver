@@ -43,12 +43,6 @@ public class recursiveBruteForce {
 		// Main-method will add them.
 		bestPath.remove(0);
 		bestPath.remove(bestPath.size() - 1);
-		// adding +1 to all paths, because the Main-method wants the
-		// node-numbers to start with 1.
-		for (int i = 0; i < bestPath.size(); i++) {
-			int value = bestPath.get(i).intValue() + 1;
-			bestPath.set(i, value);
-		}
 		return bestPath;
 	}
 

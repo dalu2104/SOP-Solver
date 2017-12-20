@@ -1,6 +1,5 @@
 package genetic;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -149,6 +148,7 @@ public class GenAlg {
 		
 		//all iterations are done. bestRunSolultion now includes the best solution from all generations except the last (and current) one.
 		//another run of rateGeneration will change that. Note that the actual ratings are not used.
+		@SuppressWarnings("unused")
 		double[] neverUsedFitness = rateGeneration(generation, matrix);
 		
 		//now bestRunSolution is the best found solution of the hole run of the genetic algorithm and is returned

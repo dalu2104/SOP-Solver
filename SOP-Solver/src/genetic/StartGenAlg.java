@@ -52,12 +52,11 @@ public class StartGenAlg {
 			return null;
 		}
 		//bestSolution now contains the result and is put into a List of Integers to match the main-method.
-		//	1 is added on all nodes because the main-method expects the nodes to go from 1 to DIM, not from 0 to DIM-1.
-		//	However nodes in bestSolution and returnSolution will go from 2 to DIM-1 leaving out the starting point and
-		//		the destination which both will be added by the main-method.
+		//the starting point (node 0) and the destination (node n) will be added by the main-method and are
+		//		therefore missing in the list that is returned.
 		List<Integer> returnSolution = new ArrayList<Integer>();
 		for(int i=0; i < bestSolution.length; i++){
-			returnSolution.add(bestSolution[i]+1);
+			returnSolution.add(bestSolution[i]);
 		}
 		return returnSolution;
 	}

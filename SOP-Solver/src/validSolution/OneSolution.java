@@ -140,8 +140,6 @@ public class OneSolution {
 		List<Integer> solList = new ArrayList<Integer>();
 		//the start and the end-node will be put into the solution by the Main.
 		for(int i=1; i < solution.length-1; i++){
-			//+1 on all nodes, because they shall start with 1, not with 0.
-			solution[i]++;
 			//putting the nodes in the list
 			solList.add(solution[i]);
 		}
