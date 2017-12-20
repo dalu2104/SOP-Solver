@@ -76,9 +76,8 @@ public class Simple {
 					}
 				}
 			}
-			// plus one because java arrays start at zero, but the given
-			// instance starts at 1.
-			B.add(vertMaxDeps + 1);
+			// add vertex with max dependencies to list and decrement accordingly.
+			B.add(vertMaxDeps);
 			depsPerVert[vertMaxDeps] = -1;
 			CurNumDeps = -1;
 			vertMaxDeps = -1;

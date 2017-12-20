@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import execution.ExeTimeSolutionCost;
 import execution.TimeStartAndStop;
 import validSolution.Simple;
 
@@ -31,13 +32,13 @@ public class sa {
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 */
-	public static ExecutionTimeAndSolution simulatedAnnealing(int[][] matrix)
+	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix)
 			throws NumberFormatException, IOException {
 		A = matrix;
 		List<Integer> solution = null;
 		long startTime = 0;
 		long elapsedTime = 0;
-		ExecutionTimeAndSolution returner = null;
+		ExeTimeSolutionCost returner = null;
 
 		// input prep
 		InputStreamReader in = new InputStreamReader(System.in);
@@ -80,8 +81,8 @@ public class sa {
 			System.out.println("Invalid input.");
 			return returner;
 		}
-		// preping the solution and returning it
-		returner = new ExecutionTimeAndSolution();
+		// preparing the solution and returning it
+		returner = new ExeTimeSolutionCost();
 		returner.setSolution(solution);
 		returner.setTimeForExecution(elapsedTime);
 
@@ -101,7 +102,6 @@ public class sa {
 		// BEWARE S DOES NOT CONTAIN START AND END VERTEX.
 		// getting a valid solution for start.
 		List<Integer> s0 = Simple.firstIdea(A);
-		s0 = fixIndexStart(s0);
 		List<Integer> s1 = null;
 		double T = 500;
 		int kmax = 1000;
@@ -114,7 +114,6 @@ public class sa {
 			}
 		}
 
-		s0 = fixIndexEnd(s0);
 		return s0;
 	}
 
@@ -131,7 +130,6 @@ public class sa {
 		// BEWARE S DOES NOT CONTAIN START AND END VERTEX.
 		// getting a valid solution for start.
 		List<Integer> s0 = Simple.firstIdea(A);
-		s0 = fixIndexStart(s0);
 		List<Integer> s1 = null;
 		double T = userTemp;
 		int kmax = userMaxIt;
@@ -144,7 +142,7 @@ public class sa {
 			}
 		}
 
-		s0 = fixIndexEnd(s0);
+
 		return s0;
 	}
 
@@ -326,33 +324,6 @@ public class sa {
 			distance += A[tour.get(i)][tour.get(i + 1)];
 		}
 		return distance;
-	}
-
-	/**
-	 * Decrement indexes due to given solution. Solutions contains the vertices
-	 * with the logical indices starting at 0 for the array, that contains
-	 * information about the dependencies.
-	 */
-	private static List<Integer> fixIndexStart(List<Integer> s0) {
-		for (int i = 0; i < s0.size(); i++) {
-			int temp = s0.get(i);
-			temp--;
-			s0.set(i, temp);
-		}
-		return s0;
-	}
-
-	/**
-	 * Increment indexes due to expected solution in main. Solution expects the
-	 * logical indices of the vertices, starting at one.
-	 */
-	private static List<Integer> fixIndexEnd(List<Integer> s0) {
-		for (int i = 0; i < s0.size(); i++) {
-			int temp = s0.get(i);
-			temp++;
-			s0.set(i, temp);
-		}
-		return s0;
 	}
 
 	/**

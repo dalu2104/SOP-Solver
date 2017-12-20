@@ -5,7 +5,6 @@ import java.util.List;
 import convertSOPFileToArray.parser;
 import dynamicProgramming.DynamicSOP;
 import genetic.StartGenAlg;
-import simulatedAnnealing.ExecutionTimeAndSolution;
 import simulatedAnnealing.sa;
 import tryAll.recursiveBruteForce;
 import tryAll.Permutations;
@@ -97,7 +96,7 @@ public class Exe {
 				break;
 			case 6:
 				//Time tracking for SA happens internally, due to expanded user input.
-				ExecutionTimeAndSolution saSol = sa.simulatedAnnealing(matrix);
+				ExeTimeSolutionCost saSol = sa.simulatedAnnealing(matrix);
 				solution = saSol.getSolution();
 				elapsedTime = saSol.getTimeForExecution();
 				break;
@@ -128,7 +127,7 @@ public class Exe {
 			printSolution(solution, cost, elapsedTime);
 		
 			//continue?
-			System.out.println("Continue with another algorithm? y/n");
+			System.out.println("Continue with an algorithm on this test instance? y/n");
 			String str = br.readLine();
 			
 			if(!str.equals("y")){
@@ -140,16 +139,16 @@ public class Exe {
 	/* ________________________HELPING METHODS__________________________ */
 	/**
 	 * Calculates the cost of the given solution with the given matrix.
-	 * Excluding the Start and Stop vertex.
+	 * Solution should contain indices according to array logic, where 0 is the start vertex and n-1 is the end vertex.
+	 * Given list should exclude the Start and Stop vertex.
 	 */
 	private static int calculateCost(int[][] matrix, List<Integer> solution) {
 		int cost = 0;
 
 		// To size-1 because we don't travel anywhere from the last vertex;
 		for (int i = 0; i < solution.size() - 1; i++) {
-			// we have got to fix the solution index since the matrix starts at
-			// 0, but the instances numbering starts at 1.
-			cost += matrix[solution.get(i) - 1][solution.get(i + 1) - 1];
+			// Indices in solution should be according to array logic, where 0 is the start vertex and n-1 is the end vertex.
+			cost += matrix[solution.get(i)][solution.get(i + 1)];
 		}
 		return cost;
 	}
@@ -163,8 +162,10 @@ public class Exe {
 		System.out.println("Tour is:");
 		// 1 is always the start vertex.
 		System.out.print("1");
+		int toPrint;
 		for (int x : solution) {
-			System.out.print(" - " + x);
+			toPrint = x + 1;
+			System.out.print(" - " + toPrint);
 		}
 		// n is always the end vertex.
 		System.out.print(" - " + (solution.size() + 2) + "\n");
