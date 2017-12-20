@@ -1,6 +1,5 @@
 package genetic;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,7 +41,7 @@ public class GenAlg {
 	private static int[] bestRunSolution;
 	
 	/**
-	 * The sum of the shortest value of each column (without 0 and -1).
+	 * The sum of the shortest value of each column (without 0, -1 and 1.000.000).
 	 * It is used in the fitness function to get a constant value which scales with the length
 	 * 		of the edges in the given instance.
 	 * Note that it should be shorter than every actual path through the graph.
@@ -71,7 +70,7 @@ public class GenAlg {
 	public static int[] geneticSOP(int[][] matrix){
 		
 		System.out.println("Run-Start"); //TODO delete
-		dim = matrix[0].length-2;	//TODO vorher war da -1
+		dim = matrix[0].length-2;
 		genSize = dim;
 		iterations = 50 + dim;
 		shortDistance = calculateShortDistance(matrix);
@@ -82,7 +81,7 @@ public class GenAlg {
 		//generate the starting-generation
 		for(int i=0; i < genSize; i++){
 			//generating dim numbers that go from 1 to dim (second border is excluding)
-			generation[i] = random.ints(dim, 1, dim+1).toArray();	//TODO vorher war hier dim und in den comments dim-1
+			generation[i] = random.ints(dim, 1, dim+1).toArray();
 			//exchange nodes that are multiple times in the path with nodes that are missing
 			//after that every node is in the path exactly once.
 			deleteMults(generation[i]);
@@ -104,12 +103,11 @@ public class GenAlg {
 			//creating a new generation via crossing GEN_SIZE selected pairs and mutation
 			int[][] newGeneration = new int[genSize][dim];
 			for(int pair=0; pair < genSize; pair++){
-				System.out.println("pair: " + pair);//TODO delete
 				//selecting a pair of 2 candidates. both candidates can also be the same candidate.
 				int candidate1 = selectCandidate(generation, fitness, overallFitness);
 				int candidate2 = selectCandidate(generation, fitness, overallFitness);
 				//choosing the point in which the candidates are crossed, last index in a path is dim-1.
-				//		Note that dim can also be picked as crosspoint, which leads to picking just candidate1 again.
+				//		Note that dim can also be picked as crossing point, which leads to picking just candidate1 again.
 				int crossPoint = random.ints(1, 0, dim+1).findFirst().getAsInt();
 				//crossing the candidates, everything left from crossPoint comes from 1, everything else from 2
 				int[] newCandidate = new int[dim];
@@ -150,6 +148,7 @@ public class GenAlg {
 		
 		//all iterations are done. bestRunSolultion now includes the best solution from all generations except the last (and current) one.
 		//another run of rateGeneration will change that. Note that the actual ratings are not used.
+		@SuppressWarnings("unused")
 		double[] neverUsedFitness = rateGeneration(generation, matrix);
 		
 		//now bestRunSolution is the best found solution of the hole run of the genetic algorithm and is returned
@@ -179,6 +178,10 @@ public class GenAlg {
 				System.out.println("rateGeneration: Valid found"); //TODO delete
 				//the path is a valid solution for the SOP-instance
 				fitness[path] = (double) shortDistance / UsefulMethods.pathLength(generation[path], matrix) * C;
+				//bestRunSolution is initialized if it wasn't before (because it is the first time that a valid solution is found
+				if(bestRunSolution == null){
+					bestRunSolution = new int[dim];
+				}
 				if(UsefulMethods.compareSolutions(generation[path], bestRunSolution, matrix)){
 					//a new best path was found
 					UsefulMethods.copyPath(generation[path], bestRunSolution);
@@ -204,18 +207,17 @@ public class GenAlg {
 	 * @return a selected candidate, defined by its index in generation.
 	 */
 	private static int selectCandidate(int[][] generation, double[] fitness, double overallFitness){
+		//getting a random double between 0.0 and overallFitness, nextDouble gives a Double between 0.0 and 1.0
 		double randomNum = random.nextDouble() * overallFitness;
-		System.out.println("overallFitness: " + overallFitness +", randomNum: "+randomNum);//TODO delete
 		double sum = 0.0;
 		for(int candidate = 0; candidate < genSize; candidate++){
 			sum += fitness[candidate];
 			if(sum >= randomNum){
-				System.out.println("SelectedCandidate: " + candidate);//TODO delete
+				//the random number lies in the range of the current candidate
 				return candidate;
 			}
 		}
 		//should never be reached
-		System.out.println("Is definetly reached!");//TODO delete
 		return 0;
 	}
 	
@@ -249,9 +251,9 @@ public class GenAlg {
 		for(int node = 0; node < path.length; node++){
 			List<Integer> nodeDeps = new ArrayList<Integer>();
 			//putting all nodes that have to be visited before the current node in the list (excluding the starting point and
-			//		the destination
+			//		the destination)
 			for(int i=1; i < matrix[0].length -1; i++){
-				if(matrix[node][i] == -1){
+				if(matrix[path[node]][i] == -1){
 					//i has to be visited before node
 					nodeDeps.add(i);
 				}
@@ -267,7 +269,7 @@ public class GenAlg {
 				if(nodeDeps.contains(path[i])){
 					//the node is included in the path before the current node, so the dependency is fulfilled
 					//the cast is necessary because we don't want to remove the element with index i but i itself from the list
-					nodeDeps.remove((Integer) i);
+					nodeDeps.remove((Integer) path[i]);
 				}
 			}
 			//now all fulfilled dependencies are removed from the list. if there is still a node on the list the path is no valid solution
@@ -323,7 +325,10 @@ public class GenAlg {
 	}
 	
 	/**
-	 * Calculates the sum of the shortest value of each column (without 0 and -1).
+	 * Calculates the sum of the shortest value of each column (without 0, -1 and 1.000.000).
+	 * The 1.000.000 must be left out because the last column does only include 1.000.000 and 0
+	 * 		in many instances. In the instances, it is only used to avoid picking the distance
+	 * 		between the starting node and the destination.
 	 * 
 	 * @param matrix
 	 * 			the given instance of the SOP-problem.
@@ -337,7 +342,7 @@ public class GenAlg {
 			int min = Integer.MAX_VALUE;
 			for(int j=0; j < allDim; j++){
 				int value = matrix[i][j];
-				if(value != -1 && value != 0 && value < min){
+				if(value != -1 && value != 0 && value != 1000000 && value < min){
 					min = value;
 				}
 			}
