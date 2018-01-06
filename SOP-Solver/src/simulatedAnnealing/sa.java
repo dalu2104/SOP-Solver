@@ -100,7 +100,6 @@ public class sa {
 		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
 		s0.setSolution(OneSolution.findSolution(A));
 		s0.setCost(cost(s0.getSolution()));
-		System.out.println(s0.getCost());
 		ExeTimeSolutionCost s1 = new ExeTimeSolutionCost();
 
 		// Scale our values according to the size of our problem.
