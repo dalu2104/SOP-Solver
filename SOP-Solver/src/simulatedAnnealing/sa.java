@@ -9,12 +9,13 @@ import java.util.Random;
 
 import execution.ExeTimeSolutionCost;
 import execution.TimeStartAndStop;
+import validSolution.OneSolution;
 import validSolution.Simple;
 
 /**
  * Class that offers a static method that calculates a good solution for a given
- * SOP problem. This method uses simulated Annealing to determine an optimal
- * solution.
+ * SOP problem. This method uses simulated Annealing to determine an a good
+ * solution. This method is a heuristic.
  * 
  * @author Daniel Lucas
  *
@@ -32,13 +33,10 @@ public class sa {
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 */
-	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix)
-			throws NumberFormatException, IOException {
+	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix) throws NumberFormatException, IOException {
 		A = matrix;
-		List<Integer> solution = null;
 		long startTime = 0;
-		long elapsedTime = 0;
-		ExeTimeSolutionCost returner = null;
+		ExeTimeSolutionCost returner = new ExeTimeSolutionCost();
 
 		// input prep
 		InputStreamReader in = new InputStreamReader(System.in);
@@ -55,8 +53,8 @@ public class sa {
 		case 1:
 			// execution and stopping of execution time.
 			startTime = TimeStartAndStop.startTime();
-			solution = simulatedAnnealing1();
-			elapsedTime = TimeStartAndStop.stopTime(startTime);
+			returner = simulatedAnnealing1();
+			returner.setTimeForExecution(TimeStartAndStop.stopTime(startTime));
 			break;
 		case 2:
 			// Choosing parameters
@@ -74,17 +72,13 @@ public class sa {
 
 			// execution and stopping of execution time.
 			startTime = TimeStartAndStop.startTime();
-			solution = simulatedAnnealing2(temp, tempDecr, itera);
-			elapsedTime = TimeStartAndStop.stopTime(startTime);
+			returner = simulatedAnnealing2(temp, tempDecr, itera);
+			returner.setTimeForExecution(TimeStartAndStop.stopTime(startTime));
 			break;
 		default:
 			System.out.println("Invalid input.");
 			return returner;
 		}
-		// preparing the solution and returning it
-		returner = new ExeTimeSolutionCost();
-		returner.setSolution(solution);
-		returner.setTimeForExecution(elapsedTime);
 
 		return returner;
 	}
@@ -94,27 +88,49 @@ public class sa {
 	 * Default mode, no user input for parameters. Returns a optimal solution as
 	 * a list according to the given restrictions inside the matrix.
 	 * 
-	 * @return An tour with minimal costs, as found in the process of Simulated Annealing.
+	 * @return An tour with minimal costs, as found in the process of Simulated
+	 *         Annealing.
 	 */
-	private static List<Integer> simulatedAnnealing1() {
+	private static ExeTimeSolutionCost simulatedAnnealing1() {
 		// in Order to start, we need a valid solution
 		// BEWARE S DOES NOT CONTAIN START AND END VERTEX.
 		// getting a valid solution for start.
-		List<Integer> s0 = Simple.firstIdea(A);
-		List<Integer> s1 = null;
-		double T = 500;
-		int kmax = 1000;
-		//saves the global best solution.
-		List<Integer> bestSolution = copyList(s0);
+		// Saving the solution in extra objects, because this way, we need to
+		// calculate the costs for a solution only once
+		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
+		s0.setSolution(OneSolution.findSolution(A));
+		s0.setCost(cost(s0.getSolution()));
+		System.out.println(s0.getCost());
+		ExeTimeSolutionCost s1 = new ExeTimeSolutionCost();
 
+		// Scale our values according to the size of our problem.
+		int n = s0.getSolution().size();
+		
+		//Runtime now O(n^2). Still a lot faster than brute force algorithm.
+		double T = 115 * n * n;
+		int kmax = 120 * n * n ;
+		// saves the global best solution. Initial solution is created valid
+		// solution.
+		ExeTimeSolutionCost bestSolution = new ExeTimeSolutionCost();
+		bestSolution.setSolution(copyList(s0.getSolution()));
+		bestSolution.setCost(s0.getCost());
+		
 		for (int k = 0; k < kmax; k++) {
+			// calculate new temperature.
 			T = temperature(T, true, 0);
-			s1 = randomNeighbour(s0);
-			if (P(cost(s0), cost(s1), T) >= generator.nextDouble()) {
-				s0 = copyList(s1);
-				// if new solution is better as best one we have had so far, we safe it as our global best.
-				if(cost(s0) < cost(bestSolution)){
-					bestSolution = copyList(s0);
+			// create a new neighbor to s0.
+			s1.setSolution(randomNeighbour(s0.getSolution()));
+			s1.setCost(cost(s1.getSolution()));
+			
+			if (P(s0.getCost(), s1.getCost(), T) >= generator.nextDouble()) {
+				s0.setSolution(copyList(s1.getSolution()));
+				s0.setCost(s1.getCost());
+
+				// if new solution is better as best one we have had so far, we
+				// safe it as our global best.
+				if (s0.getCost() < bestSolution.getCost()) {
+					bestSolution.setSolution(copyList(s0.getSolution()));
+					bestSolution.setCost(s0.getCost());
 				}
 			}
 		}
@@ -127,31 +143,49 @@ public class sa {
 	 * Called with user input parameters. Returns a optimal solution as a list
 	 * according to the given restrictions inside the matrix.
 	 * 
-	 * @return An tour with minimal costs, as found in the process of Simulated Annealing.
+	 * @return An tour with minimal costs, as found in the process of Simulated
+	 *         Annealing.
 	 */
-	private static List<Integer> simulatedAnnealing2(double userTemp, double userTempDecr, int userMaxIt) {
+	private static ExeTimeSolutionCost simulatedAnnealing2(double userTemp, double userTempDecr, int userMaxIt) {
 		// in Order to start, we need a valid solution
 		// BEWARE S DOES NOT CONTAIN START AND END VERTEX.
 		// getting a valid solution for start.
-		List<Integer> s0 = Simple.firstIdea(A);
-		List<Integer> s1 = null;
+		// Saving the solution in extra objects, because this way, we need to
+		// calculate the costs for a solution only once.
+		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
+		s0.setSolution(OneSolution.findSolution(A));
+		s0.setCost(cost(s0.getSolution()));
+		ExeTimeSolutionCost s1 = new ExeTimeSolutionCost();
+		// user input
 		double T = userTemp;
 		int kmax = userMaxIt;
-		// saves the global best solution.
-		List<Integer> bestSolution = copyList(s0);
+
+		// saves the global best solution. Initial solution is created valid
+		// solution.
+		ExeTimeSolutionCost bestSolution = new ExeTimeSolutionCost();
+
+		bestSolution.setSolution(copyList(s0.getSolution()));
+		bestSolution.setCost(s0.getCost());
 
 		for (int k = 0; k < kmax; k++) {
+			// calculate new temperature.
 			T = temperature(T, false, userTempDecr);
-			s1 = randomNeighbour(s0);
-			if (P(cost(s0), cost(s1), T) >= generator.nextDouble()) {
-				s0 = copyList(s1);
-				// if new solution is better as best one we have had so far, we safe it as our global best.
-				if(cost(s0) < cost(bestSolution)){
-					bestSolution = copyList(s0);
+			// create a new neighbor to s0.
+			s1.setSolution(randomNeighbour(s0.getSolution()));
+			s1.setCost(cost(s1.getSolution()));
+			
+			if (P(s0.getCost(), s1.getCost(), T) >= generator.nextDouble()) {
+				s0.setSolution(copyList(s1.getSolution()));
+				s0.setCost(s1.getCost());
+				
+				// if new solution is better as best one we have had so far, we
+				// safe it as our global best.
+				if (s0.getCost() < bestSolution.getCost()) {
+					bestSolution.setSolution(copyList(s0.getSolution()));
+					bestSolution.setCost(s0.getCost());
 				}
 			}
 		}
-
 
 		return bestSolution;
 	}
@@ -194,8 +228,10 @@ public class sa {
 	 * @return decremented temperature
 	 */
 	private static double temperature(double T, boolean defaultMode, double step) {
-		if (defaultMode) {
+		// T can only be reduced if its above zero.
+		if (defaultMode && T > 0) {
 			T--;
+			// Temperature cannot go below zero.
 		} else if (T == 0) {
 			return T;
 		} else {
@@ -213,47 +249,22 @@ public class sa {
 	 * @return A valid neighbor of the given list.
 	 */
 	private static List<Integer> randomNeighbour(List<Integer> s0) {
-		// copy to safe the original
+		// copy to safe the original, s0 now makes its changes on its own
+		// version of the list.
 		List<Integer> original = new ArrayList<Integer>();
 		original = copyList(s0);
 
+		// From original, switch two random vertices. If switched list is valid,
+		// break. If it is not valid, get original again and switch two random
+		// vertices and so on.
 		while (true) {
 			s0 = copyList(original);
 			int r = generator.nextInt(s0.size());
-			s0 = switchVertex(r, s0);
+			int k = generator.nextInt(s0.size());
+			s0 = switchTwo(s0, r, k);
 			// Made a valid change, breaking out of loop.
 			if (isValid(s0)) {
 				break;
-			}
-		}
-		return s0;
-	}
-
-	// Include this method in SA related due to its randomness.
-	/**
-	 * Switches the vertex at the index r in the list s0 with a random neighbor.
-	 * 
-	 * @param r
-	 *            Index in the list.
-	 * @param s0
-	 *            List of vertices to switch.
-	 */
-	private static List<Integer> switchVertex(int r, List<Integer> s0) {
-		// first case, r is the last index, can only switch with the lower
-		// neighbor
-		if (r == s0.size() - 1) {
-			s0 = switchLower(s0, r);
-			// r is index 0, can only switch with the upper neighbor.
-		} else if (r == 0) {
-			s0 = switchUpper(s0, r);
-			// r is somewhere in the middle, switch with a random neighbor.
-		} else {
-			// int ud = 0 for lower neighbor, ud = 1 for upper.
-			int ud = generator.nextInt(2);
-			if (ud == 1) {
-				s0 = switchUpper(s0, r);
-			} else {
-				s0 = switchLower(s0, r);
 			}
 		}
 		return s0;
@@ -270,27 +281,13 @@ public class sa {
 	 *            Given list.
 	 * @param r
 	 *            Given index.
-	 * @return The list with the switched vertices.
-	 */
-	private static List<Integer> switchUpper(List<Integer> s0, int r) {
-		int temp = s0.get(r + 1);
-		s0.set(r + 1, s0.get(r));
-		s0.set(r, temp);
-		return s0;
-	}
-
-	/**
-	 * Switches vertex at the index in the list with its upper neighbor.
-	 * 
-	 * @param s0
-	 *            Given list.
-	 * @param r
+	 * @param k
 	 *            Given index.
 	 * @return The list with the switched vertices.
 	 */
-	private static List<Integer> switchLower(List<Integer> s0, int r) {
-		int temp = s0.get(r - 1);
-		s0.set(r - 1, s0.get(r));
+	private static List<Integer> switchTwo(List<Integer> s0, int r, int k) {
+		int temp = s0.get(k);
+		s0.set(k, s0.get(r));
 		s0.set(r, temp);
 		return s0;
 	}
@@ -309,7 +306,7 @@ public class sa {
 	private static boolean isValid(List<Integer> newSolution) {
 		for (int i = 1; i < newSolution.size(); i++) {
 			for (int j = 0; j < i; j++) {
-				// check if another one has to be visited before
+				// check if another vertex has to be visited before
 				if (A[newSolution.get(j)][newSolution.get(i)] == -1)
 					return false;
 			}
@@ -344,7 +341,10 @@ public class sa {
 	 * @return The new copy of the list.
 	 */
 	private static List<Integer> copyList(List<Integer> from) {
+		// creating a new list, so the target will have an own copy of its list
+		// and not refer to the same list (which might be randomly changed).
 		List<Integer> to = new ArrayList<Integer>();
+		// adding all elements to a new list.
 		for (int i : from) {
 			to.add(i);
 		}
