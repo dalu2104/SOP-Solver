@@ -31,14 +31,20 @@ public class GenAlg {
 	
 	/**
 	 * The chance that a node in a candidate will mutate.
-//	 * MUTATION_RATE of 500 is a chance of 1/500 (=0.002) that a node will mutate.
+	 * MUTATION_RATE of 500 is a chance of 1/500 (=0.002) that a node will mutate.
+	 * MUTATION_RATE of 200 is a chance of 1/200 (=0.005) that a node will mutate.
 	 */
-	private static final int MUTATION_RATE = 500;
+	private static final int MUTATION_RATE = 200;
 	
 	/**
 	 * Saves the best found valid solution of all generations in this run.
 	 */
 	private static int[] bestRunSolution;
+	
+	/**
+	 * Saves the Pathlength of the bestRunSolution.
+	 */
+	private static int bestRunSolutionLength;
 	
 	/**
 	 * The sum of the shortest value of each column (without 0, -1 and 1.000.000).
@@ -52,7 +58,7 @@ public class GenAlg {
 	 * Scales the modification on the fitness-value of a path, if it is a valid solution.
 	 * If C is 1.5 for example, the fitness-value is 1.5 times bigger than if it was not valid.
 	 */
-	private static final double C = 1.5;
+	private static final double C = 5;
 	
 	/**
 	 * The random-generator to be used in the run of the genetic algorithm.
@@ -69,12 +75,10 @@ public class GenAlg {
 	 */
 	public static int[] geneticSOP(int[][] matrix){
 		
-		System.out.println("Run-Start"); //TODO delete
 		dim = matrix[0].length-2;
-		genSize = dim;
-		iterations = 50 + dim;
+		genSize = 4 * dim;
+		iterations = 10 * dim;
 		shortDistance = calculateShortDistance(matrix);
-		System.out.println("shortestDistance: " + shortDistance);//TODO delete
 		
 		int[][] generation = new int[genSize][dim];
 		
@@ -90,7 +94,6 @@ public class GenAlg {
 		//starting an iteration.
 		//each iteration includes rating the current generation and generating a new generation via crossing and mutation.
 		for(int iteration=0; iteration < iterations; iteration++){
-			System.out.println("Generation: ");//TODO delete
 			//rating the generation
 			double[] fitness = rateGeneration(generation, matrix);
 			//summing up all fitness-ratings of the candidates of the current generation.
@@ -127,11 +130,30 @@ public class GenAlg {
 				//possible mutation of each node in the new candidate
 				for(int i=0; i < newCandidate.length; i++){
 					if(mutation()){
-						//50% chance to get +1, 50% to get -1 on the node
-						if(random.nextBoolean()){
-							newCandidate[i]++;
+						//there is a mutation
+						if(i == 0){
+							//the node is the first one, exchange it with the next node
+							int mutateNode = newCandidate[i];
+							newCandidate[i] = newCandidate[i+1];
+							newCandidate[i+1] = mutateNode;
+						} else if(i == newCandidate.length -1){
+							//the node is the last one, exchange it with the previous node
+							int mutateNode = newCandidate[i];
+							newCandidate[i] = newCandidate[i-1];
+							newCandidate[i-1] = mutateNode;
 						} else {
-							newCandidate[i]--;
+							//50% chance to change with the next neighbor, 50% to change with the previous
+							if(random.nextBoolean()){
+								//exchange with the next node
+								int mutateNode = newCandidate[i];
+								newCandidate[i] = newCandidate[i+1];
+								newCandidate[i+1] = mutateNode;
+							} else {
+								//exchange with the previous node
+								int mutateNode = newCandidate[i];
+								newCandidate[i] = newCandidate[i-1];
+								newCandidate[i-1] = mutateNode;
+							}
 						}
 					}
 				}
@@ -174,23 +196,24 @@ public class GenAlg {
 		 */
 		
 		for(int path = 0; path < genSize; path++){
+			int pathLength = UsefulMethods.pathLength(generation[path], matrix);
 			if(isValid(generation[path], matrix)){
-				System.out.println("rateGeneration: Valid found"); //TODO delete
 				//the path is a valid solution for the SOP-instance
-				fitness[path] = (double) shortDistance / UsefulMethods.pathLength(generation[path], matrix) * C;
-				//bestRunSolution is initialized if it wasn't before (because it is the first time that a valid solution is found
+				fitness[path] = (double) shortDistance / pathLength * C;
 				if(bestRunSolution == null){
+					//it is the first time that a valid solution is found
 					bestRunSolution = new int[dim];
-				}
-				if(UsefulMethods.compareSolutions(generation[path], bestRunSolution, matrix)){
+					UsefulMethods.copyPath(generation[path], bestRunSolution);
+					bestRunSolutionLength = pathLength;
+				} else if(bestRunSolutionLength > pathLength){
 					//a new best path was found
 					UsefulMethods.copyPath(generation[path], bestRunSolution);
+					bestRunSolutionLength = pathLength;
 				}
 			} else {
 				//the path is not a valid solution
-				fitness[path] = (double) shortDistance / UsefulMethods.pathLength(generation[path], matrix);
+				fitness[path] = (double) shortDistance / pathLength;
 			}
-			System.out.println("Path: "+goString(generation[path])+", Rating: "+fitness[path]);//TODO delete
 		}
 		return fitness;
 	}
@@ -283,26 +306,21 @@ public class GenAlg {
 	/**
 	 * Exchanges nodes that are in a given path multiple times through nodes that are missing.
 	 * Afterwards every node is in the path exactly once.
-	 * Sorts out nodes that mutated over the normal node-range. For example if dim = 7 there should only be
-	 * 		nodes from 1 to 7 in the path. But a node of 7 can mutate to 8 and a node of 1 can mutate to 0.
-	 * 		Therefore these nodes will be exchanged here as well.
 	 * 
 	 * @param path
 	 * 			the path to delete multiple nodes from.
 	 */
 	private static void deleteMults(int[] path){
-		//howManyTimes[i] saves how many times node i is in the given path. note that there can be the node
-		//		path.length +1 because the normally highest node (which should be path.length) can mutate.
-		int[] howManyTimes = new int[path.length +2];
+		//howManyTimes[i] saves how many times node i is in the given path.
+		int[] howManyTimes = new int[path.length +1];
 		for(int i=0; i < path.length; i++){
 			howManyTimes[path[i]] = howManyTimes[path[i]] +1;
 		}
 		//saving the missing nodes in a list (starting with node 1 because node 0 is the starting point and
 		//		not featured in the solution-paths)
 		List<Integer> missingNodes = new ArrayList<Integer>();
-		for(int i=1; i < howManyTimes.length -1; i++){
-			//we leave out the starting node (with index 0) and the last index (path.length+1) which is only
-			//		there by failure mutation
+		for(int i=1; i < howManyTimes.length; i++){
+			//we leave out the starting node (with index 0)
 			if(howManyTimes[i] == 0){
 				missingNodes.add(i);
 			}

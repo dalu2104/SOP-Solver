@@ -64,7 +64,8 @@ public class Exe {
 			System.out.println("Other options:");
 			System.out.println("9 - Exit programm.");
 
-			int n = Integer.parseInt(br.readLine());
+			//int n = Integer.parseInt(br.readLine()); //TODO uncomment
+			int n = 7; //TODO delete
 
 			// Executing algorithm according to user and calculating execution
 			// time.
