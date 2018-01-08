@@ -30,6 +30,9 @@ public class UsefulMethods {
 	
 	/**
 	 * Calculates the length of the given path based on the distances of the given matrix.
+	 * Includes the distance from the starting node (which is not in the path) to the first node
+	 * in the path and the the distance from the last node in the path to the destination node
+	 * (which is not in the path as well).
 	 * 
 	 * @param path
 	 * 			path of which to calculate the length.
@@ -39,9 +42,14 @@ public class UsefulMethods {
 	 */
 	public static int pathLength(int[] path, int[][] matrix){
 		int pathLength = 0;
+		//the distance from the starting node to the first node in the path
+		pathLength += matrix[0][path[0]];
+		//the distances between the nodes in the path
 		for(int i=0; i < path.length -1; i++){
 			pathLength += matrix[path[i]][path[i+1]];
 		}
+		//the distance from the last node in the path to the destination node
+		pathLength += matrix[path[path.length-1]][matrix[0].length-1];
 		return pathLength;
 	}
 	

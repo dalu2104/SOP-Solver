@@ -188,6 +188,7 @@ public class GenAlg {
 	 * 			Fitness-values are always positive. The greatest fitness-value is the best.
 	 */
 	private static double[] rateGeneration(int[][] generation, int[][] matrix){
+		//System.out.println("Generation");//TODO delete
 		double[] fitness = new double[genSize];
 		
 		/*	current Fitness-function is:  		shortDistance
@@ -198,6 +199,7 @@ public class GenAlg {
 		for(int path = 0; path < genSize; path++){
 			int pathLength = UsefulMethods.pathLength(generation[path], matrix);
 			if(isValid(generation[path], matrix)){
+				//System.out.println("valid found");//TODO delete
 				//the path is a valid solution for the SOP-instance
 				fitness[path] = (double) shortDistance / pathLength * C;
 				if(bestRunSolution == null){
@@ -214,6 +216,7 @@ public class GenAlg {
 				//the path is not a valid solution
 				fitness[path] = (double) shortDistance / pathLength;
 			}
+			//System.out.println("path: " + arrayToString(generation[path]) + ", length: " + pathLength + ", fitness: " + fitness[path]);//TODO delete
 		}
 		return fitness;
 	}
@@ -371,11 +374,17 @@ public class GenAlg {
 		return result;
 	}
 	
-	//TODO delete
-	private static String goString(int[] array){
+	/**
+	 * Only used for testing.
+	 * 
+	 * @param array
+	 * 			the array to print.
+	 * @return a String representation of the content of the array
+	 */
+	private static String arrayToString(int[] array){
 		String result = "";
 		for(int i=0; i < array.length; i++){
-			result += array[i];
+			result += array[i] + " ";
 		}
 		return result;
 	}
