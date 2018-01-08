@@ -67,9 +67,17 @@ public class Utility {
 	 */
 	protected static int cost(List<Integer> tour, int[][] A) {
 		int distance = 0;
+		
+		//cost of start to first vertex in tour.
+		distance += A[0][tour.get(0)];
+		
+		//cost of tour.
 		for (int i = 0; i < tour.size() - 1; i++) {
 			distance += A[tour.get(i)][tour.get(i + 1)];
 		}
+		
+		//cost of last vertex in tour to end vertex.
+		distance += A[tour.get(tour.size() - 1)][A.length - 1];
 		return distance;
 	}
 
