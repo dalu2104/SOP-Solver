@@ -11,6 +11,7 @@ javac -d build $PWD/SOP-Solver/src/validSolution/Simple.java
 javac -d build -cp build $PWD/SOP-Solver/src/tryAll/Permutations.java
 javac -d build $PWD/SOP-Solver/src/tryAll/recursiveBruteForce.java
 
+javac -d build -cp build $PWD/SOP-Solver/src/simulatedAnnealing/Utility.java
 javac -d build -cp build $PWD/SOP-Solver/src/simulatedAnnealing/sa.java
 
 javac -d build -cp build $PWD/SOP-Solver/src/genetic/UsefulMethods.java
