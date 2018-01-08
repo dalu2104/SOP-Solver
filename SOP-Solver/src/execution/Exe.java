@@ -141,16 +141,21 @@ public class Exe {
 	/**
 	 * Calculates the cost of the given solution with the given matrix.
 	 * Solution should contain indices according to array logic, where 0 is the start vertex and n-1 is the end vertex.
-	 * Given list should exclude the Start and Stop vertex.
+	 * Given list should exclude the Start and Stop vertex but the distances from the start vertex to the first vertex of the list
+	 * 		and from the last vertex of the list to the end vertex are added to the cost as well.
 	 */
 	private static int calculateCost(int[][] matrix, List<Integer> solution) {
 		int cost = 0;
-
+		//distance from the start vertex to the first vertex of the list
+		cost += matrix[0][solution.get(0)];
+		//distances between the vertices in the list
 		// To size-1 because we don't travel anywhere from the last vertex;
 		for (int i = 0; i < solution.size() - 1; i++) {
 			// Indices in solution should be according to array logic, where 0 is the start vertex and n-1 is the end vertex.
 			cost += matrix[solution.get(i)][solution.get(i + 1)];
 		}
+		//distance from the last vertex of the list to the end vertex
+		cost += matrix[solution.get(solution.size()-1)][matrix[0].length-1];
 		return cost;
 	}
 
