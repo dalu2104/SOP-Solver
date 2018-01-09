@@ -58,7 +58,7 @@ public class Exe {
 
 			System.out.println("Advanced algorithms:");
 			System.out.println("6 - Simulated Annealing (default parameters).");
-			System.out.println("7 - Simulated Annealing (.");
+			System.out.println("7 - Simulated Annealing (user-input parameters).");
 			System.out.println("8 - Genetic Algorithm.");
 			System.out.println("9 - Dynamic Programming.");
 
