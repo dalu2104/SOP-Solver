@@ -25,40 +25,37 @@ public class sa {
 	private static Random generator = new Random();
 
 	/**
-	 * Returns optimal solution for given matrix and asks the user for his input
+	 * Returns optimal solution for given matrix and asks the user for his
+	 * input, in case this method is called with defaultMode = false.
 	 * 
 	 * @param matrix
 	 *            Given matrix for the SOP problem.
+	 * @param defaultMode
+	 *            Indicates whether this method was called in default mode or
+	 *            not. True, if default method is called. False, otherwise.
 	 * @return A valid good solution.
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 */
-	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix) throws NumberFormatException, IOException {
+	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix, boolean defaultMode)
+			throws NumberFormatException, IOException {
+		// variable init.
 		A = matrix;
 		long startTime = 0;
 		ExeTimeSolutionCost returner = new ExeTimeSolutionCost();
 
-		// input prep
-		InputStreamReader in = new InputStreamReader(System.in);
-		BufferedReader br = new BufferedReader(in);
-		System.out.println("Please choose by entering a number:");
-		System.out.println("1 - Default parameters.");
-		System.out.println("2 - Choice of parameters.");
-
-		int n = Integer.parseInt(br.readLine());
-
 		// Executing algorithm according to user and calculating execution
 		// time.
-		switch (n) {
-		case 1:
+		if (defaultMode) {
 			// execution and stopping of execution time.
 			startTime = TimeStartAndStop.startTime();
 			returner = simulatedAnnealing1();
 			returner.setTimeForExecution(TimeStartAndStop.stopTime(startTime));
-			break;
-		case 2:
-			// Choosing parameters
-			// Temperature
+		} else {
+			// input preparation.
+			InputStreamReader in = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(in);
+
 			System.out.println("Enter temperature.");
 			double temp = Double.parseDouble(br.readLine());
 
@@ -74,12 +71,7 @@ public class sa {
 			startTime = TimeStartAndStop.startTime();
 			returner = simulatedAnnealing2(temp, tempDecr, itera);
 			returner.setTimeForExecution(TimeStartAndStop.stopTime(startTime));
-			break;
-		default:
-			System.out.println("Invalid input.");
-			return returner;
 		}
-
 		return returner;
 	}
 
@@ -107,8 +99,15 @@ public class sa {
 		// Runtime now O(n^2). Still a lot faster than brute force algorithm.
 		int n = s0.getSolution().size();
 		double T = 200;
-		int kmax = 120 * n * n;
-		double tempDecr = 0.0001;
+		// testing has shown that instances with dimensions of 110 or higher do
+		// not terminate in realistic time, so we generate an upper bound.
+		int kmax;
+		if (n < 110) {
+			kmax = 120 * n * n;
+		} else {
+			kmax = 120 * 110 * 110;
+		}
+		double tempDecr = 0.00001;
 
 		// saves the global best solution. Initial solution is created valid
 		// solution.
@@ -119,7 +118,7 @@ public class sa {
 		for (int k = 0; k < kmax; k++) {
 			// calculate new temperature.
 			T = temperature(T, tempDecr);
-			
+
 			// create a new neighbor to s0.
 			s1.setSolution(randomNeighbour(s0.getSolution()));
 			s1.setCost(Utility.cost(s1.getSolution(), A));

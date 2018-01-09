@@ -57,12 +57,13 @@ public class Exe {
 			System.out.println("5 - Recursive brute-force algorithm II.");
 
 			System.out.println("Advanced algorithms:");
-			System.out.println("6 - Simulated Annealing.");
-			System.out.println("7 - Genetic Algorithm.");
-			System.out.println("8 - Dynamic Programming.");
+			System.out.println("6 - Simulated Annealing (default parameters).");
+			System.out.println("7 - Simulated Annealing (.");
+			System.out.println("8 - Genetic Algorithm.");
+			System.out.println("9 - Dynamic Programming.");
 
 			System.out.println("Other options:");
-			System.out.println("9 - Exit programm.");
+			System.out.println("Any other key - Exit programm.");
 
 			int n = Integer.parseInt(br.readLine());
 
@@ -97,11 +98,17 @@ public class Exe {
 				break;
 			case 6:
 				//Time tracking for SA happens internally, due to expanded user input.
-				ExeTimeSolutionCost saSol = sa.simulatedAnnealing(matrix);
-				solution = saSol.getSolution();
-				elapsedTime = saSol.getTimeForExecution();
+				ExeTimeSolutionCost saSol1 = sa.simulatedAnnealing(matrix, true);
+				solution = saSol1.getSolution();
+				elapsedTime = saSol1.getTimeForExecution();
 				break;
 			case 7:
+				//Time tracking for SA happens internally, due to expanded user input.
+				ExeTimeSolutionCost saSol2 = sa.simulatedAnnealing(matrix, false);
+				solution = saSol2.getSolution();
+				elapsedTime = saSol2.getTimeForExecution();
+				break;
+			case 8:
 				startTime = TimeStartAndStop.startTime();
 				solution = StartGenAlg.runAlg(matrix);
 				elapsedTime = TimeStartAndStop.stopTime(startTime);
@@ -111,13 +118,11 @@ public class Exe {
 					return;
 				}
 				break;
-			case 8:
+			case 9:
 				startTime = TimeStartAndStop.startTime();
 				solution = DynamicSOP.solveDynamic(matrix);
 				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;		
-			case 9:
-				return;
 			default:
 				System.out.println("Entered invalid number");
 				return;
