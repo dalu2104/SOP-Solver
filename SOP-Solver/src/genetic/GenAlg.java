@@ -17,34 +17,34 @@ public class GenAlg {
 	 * 		are dim long with indices 0 to dim-1 including the numbers (nodes) 1 to dim (= actual DIM -1).
 	 * 		The starting node 0 and the destination node dim will be added later in the main-method.
 	 */
-	private static int dim;
+	private int dim;
 	
 	/**
 	 * The size of each Generation.
 	 */
-	private static int genSize;
+	private int genSize;
 	
 	/**
 	 * Number of iterations and also generations.
 	 */
-	private static int iterations;
+	private int iterations;
 	
 	/**
 	 * The chance that a node in a candidate will mutate.
 	 * MUTATION_RATE of 500 is a chance of 1/500 (=0.002) that a node will mutate.
 	 * MUTATION_RATE of 200 is a chance of 1/200 (=0.005) that a node will mutate.
 	 */
-	private static final int MUTATION_RATE = 200;
+	private final int MUTATION_RATE = 200;
 	
 	/**
 	 * Saves the best found valid solution of all generations in this run.
 	 */
-	private static int[] bestRunSolution;
+	private int[] bestRunSolution;
 	
 	/**
 	 * Saves the Pathlength of the bestRunSolution.
 	 */
-	private static int bestRunSolutionLength;
+	private int bestRunSolutionLength;
 	
 	/**
 	 * The sum of the shortest value of each column (without 0, -1 and 1.000.000).
@@ -52,18 +52,18 @@ public class GenAlg {
 	 * 		of the edges in the given instance.
 	 * Note that it should be shorter than every actual path through the graph.
 	 */
-	private static int shortDistance;
+	private int shortDistance;
 	
 	/**
 	 * Scales the modification on the fitness-value of a path, if it is a valid solution.
 	 * If C is 1.5 for example, the fitness-value is 1.5 times bigger than if it was not valid.
 	 */
-	private static final double C = 5;
+	private final double C = 5;
 	
 	/**
 	 * The random-generator to be used in the run of the genetic algorithm.
 	 */
-	private static Random random = new Random();
+	private Random random = new Random();
 	
 	/**
 	 * A Genetic Algorithm that finds a good (not necessarily the best) for a given SOP-Instance.
@@ -73,7 +73,7 @@ public class GenAlg {
 	 * 			The first node is always the start and the last node always the destination. Therefore supports the SOP-instances of the TSP-lib.
 	 * @return the best valid solution-path found or null if no valid path was found.
 	 */
-	public static int[] geneticSOP(int[][] matrix){
+	public int[] geneticSOP(int[][] matrix){
 		
 		dim = matrix[0].length-2;
 		genSize = 4 * dim;
@@ -187,7 +187,7 @@ public class GenAlg {
 	 * 			fitness[i] is the fitness-value of the candidate generation[i].
 	 * 			Fitness-values are always positive. The greatest fitness-value is the best.
 	 */
-	private static double[] rateGeneration(int[][] generation, int[][] matrix){
+	private double[] rateGeneration(int[][] generation, int[][] matrix){
 		//System.out.println("Generation");//TODO delete
 		double[] fitness = new double[genSize];
 		
@@ -232,7 +232,7 @@ public class GenAlg {
 	 * 			the sum of all fitness-values from the current generation.
 	 * @return a selected candidate, defined by its index in generation.
 	 */
-	private static int selectCandidate(int[][] generation, double[] fitness, double overallFitness){
+	private int selectCandidate(int[][] generation, double[] fitness, double overallFitness){
 		//getting a random double between 0.0 and overallFitness, nextDouble gives a Double between 0.0 and 1.0
 		double randomNum = random.nextDouble() * overallFitness;
 		double sum = 0.0;
@@ -252,7 +252,7 @@ public class GenAlg {
 	 * 
 	 * @return true if a candidate shall mutate and false otherwise.
 	 */
-	private static boolean mutation(){
+	private boolean mutation(){
 		boolean result = false;
 		int randomNum = random.ints(1, 0, MUTATION_RATE+1).findFirst().getAsInt();
 		if(randomNum==MUTATION_RATE){
@@ -273,7 +273,7 @@ public class GenAlg {
 	 * 			the given SOP-instace for which the path could be a valid solution.
 	 * @return true, if the path is a valid solution for the instance and false otherwise.
 	 */
-	private static boolean isValid(int[] path, int[][] matrix){
+	private boolean isValid(int[] path, int[][] matrix){
 		for(int node = 0; node < path.length; node++){
 			List<Integer> nodeDeps = new ArrayList<Integer>();
 			//putting all nodes that have to be visited before the current node in the list (excluding the starting point and
@@ -313,7 +313,7 @@ public class GenAlg {
 	 * @param path
 	 * 			the path to delete multiple nodes from.
 	 */
-	private static void deleteMults(int[] path){
+	private void deleteMults(int[] path){
 		//howManyTimes[i] saves how many times node i is in the given path.
 		int[] howManyTimes = new int[path.length +1];
 		for(int i=0; i < path.length; i++){
@@ -356,7 +356,7 @@ public class GenAlg {
 	 * @return a sum of short edges in the graph.
 	 * 			Note that it should be shorter than every actual path through the graph.
 	 */
-	private static int calculateShortDistance(int[][] matrix){
+	private int calculateShortDistance(int[][] matrix){
 		int result = 0;
 		int allDim = matrix[0].length;
 		for(int i=0; i < allDim; i++){
@@ -381,7 +381,7 @@ public class GenAlg {
 	 * 			the array to print.
 	 * @return a String representation of the content of the array
 	 */
-	private static String arrayToString(int[] array){
+	private String arrayToString(int[] array){
 		String result = "";
 		for(int i=0; i < array.length; i++){
 			result += array[i] + " ";

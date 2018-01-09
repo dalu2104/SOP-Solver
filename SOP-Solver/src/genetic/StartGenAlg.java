@@ -18,11 +18,6 @@ public class StartGenAlg {
 	private static final int RUNS = 3;
 	
 	/**
-	 * Saves the best solution path of all runs through the genetic Algorithm and is returned later.
-	 */
-	private static int[] bestSolution;
-	
-	/**
 	 * Solves a SOP-Problem, given by a matrix of distances and dependencies, by calling a genetic Algorithm.
 	 * Puts the solution into a shape that the main-method in the Exe-class can handle.
 	 * 
@@ -34,11 +29,17 @@ public class StartGenAlg {
 	 * 			Therefore contains integers higher or equal than 2.
 	 */
 	public static List<Integer> runAlg(int[][] matrix){
+		
+		GenAlg genAlg = new GenAlg();
+		
+		//for explenation of the decrement see GenAlg.dim
 		int dim = matrix[0].length -2;
-		//for explanation of the decrement see GenAlg.dim
-		bestSolution = new int[dim];
+		
+		//Saves the best solution path of all runs through the genetic Algorithm and is returned later.
+		int [] bestSolution = new int[dim];
+		
 		for(int run=0; run < RUNS; run++){
-			int[] aSolution = GenAlg.geneticSOP(matrix);
+			int[] aSolution = genAlg.geneticSOP(matrix);
 			if(aSolution != null){
 				//aSolution is a valid solution for the SOP-problem
 				if(UsefulMethods.compareSolutions(aSolution, bestSolution, matrix)){
