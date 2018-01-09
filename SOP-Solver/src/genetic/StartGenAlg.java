@@ -30,8 +30,6 @@ public class StartGenAlg {
 	 */
 	public static List<Integer> runAlg(int[][] matrix){
 		
-		GenAlg genAlg = new GenAlg();
-		
 		//for explenation of the decrement see GenAlg.dim
 		int dim = matrix[0].length -2;
 		
@@ -39,6 +37,7 @@ public class StartGenAlg {
 		int [] bestSolution = new int[dim];
 		
 		for(int run=0; run < RUNS; run++){
+			GenAlg genAlg = new GenAlg();
 			int[] aSolution = genAlg.geneticSOP(matrix);
 			if(aSolution != null){
 				//aSolution is a valid solution for the SOP-problem
