@@ -87,13 +87,10 @@ public class DynamicSOP {
 
 		int binVal = 0;
 		// begin with sets of Mächtigkeit 2
-		int MÄCHTIGKEIT = 2;
-		init(binSet, MÄCHTIGKEIT);
-		while (MÄCHTIGKEIT <= v) {
-			// for debugging
-			int a = 0;
-			if (MÄCHTIGKEIT > 3)
-				a = 2;
+		int m = 2;
+		init(binSet, m);
+		while (m <= v) {
+
 			// calculate value of actual set
 			binVal = calculateSet(binSet);
 			// a boolean to check the dependencies
@@ -125,7 +122,7 @@ public class DynamicSOP {
 				 */
 			}
 
-			MÄCHTIGKEIT = changeSet(binSet, MÄCHTIGKEIT);
+			m = changeSet(binSet, m);
 
 		}
 		return tours;
