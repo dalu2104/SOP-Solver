@@ -37,12 +37,15 @@ public class sa {
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 */
-	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix, boolean defaultMode)
-			throws NumberFormatException, IOException {
-		// variable init.
+	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix, boolean defaultMode) {
+		// variable Initialization.
 		A = matrix;
 		long startTime = 0;
 		ExeTimeSolutionCost returner = new ExeTimeSolutionCost();
+		double tempDecr;
+		double temp;
+		int itera;
+		
 
 		// Executing algorithm according to user and calculating execution
 		// time.
@@ -56,16 +59,21 @@ public class sa {
 			InputStreamReader in = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(in);
 
-			System.out.println("Enter temperature.");
-			double temp = Double.parseDouble(br.readLine());
+			try {
+				System.out.println("Enter temperature.");
+				temp = Double.parseDouble(br.readLine());
 
-			// temperature decrement
-			System.out.println("Enter temperature decrementation.");
-			double tempDecr = Double.parseDouble(br.readLine());
+				// temperature decrement
+				System.out.println("Enter temperature decrementation.");
+				tempDecr = Double.parseDouble(br.readLine());
 
-			// iterations
-			System.out.println("Enter amount of iterations.");
-			int itera = Integer.parseInt(br.readLine());
+				// iterations
+				System.out.println("Enter amount of iterations.");
+				itera = Integer.parseInt(br.readLine());
+			} catch (NumberFormatException | IOException e) {
+				System.out.println("Incorrect input.");
+				return null;
+			}
 
 			// execution and stopping of execution time.
 			startTime = TimeStartAndStop.startTime();
