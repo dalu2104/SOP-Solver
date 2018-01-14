@@ -6,21 +6,36 @@ import java.util.List;
 public class DynamicSOP {
 
 	public static List<Integer> solveDynamic(int[][] matrix) {
-		// get help variables
+		// get help variables:
 		// number of vertices
 		int n = matrix.length;
+
 		// create solution List
 		List<Integer> solution = new ArrayList<Integer>();
-		// start with the dynamic program
-		// create an array for the distances
-		// first index is the vertex, second is a Set representing through
-		// binary numbers
+		// check trivial cases up to 3 vertices
+		if (n <= 3) {
+			// just add the vertices to a list and return them
+			for (int i = 0; i < n; i++)
+				solution.add(i);
+			return solution;
+		}
+		/*
+		 * If we have more vertices we start with the dynamic programming
+		 * algorithm. At first it creates a matrix which all subtours ending in
+		 * every vertex. In tours[i][j] is the costs of a tour ending in i. The
+		 * tour contains a set of vertices representing through a value j. J is
+		 * the decimal value of a set of vertices as a binary number. In index
+		 * [0] is vertex 2 up to n-1 at index n-2. Example: In tours[3][33] are
+		 * the costs of a tour over the vertices 2,5 and 6 (because 2^(2-2) +
+		 * 2(^5-2) + 2^(6-2) = 33) ending up in vertex 5-2 = 3;
+		 */
 		int[][] tours = new int[n - 2][(int) Math.pow(2, n - 2)];
-		// // initialize values: tours with length one
-		// for (int i = 1; i <= n - 2; i++)
-		// tours[i - 1][(int) Math.pow(2, i - 1)] = matrix[0][i]+1;
+
+		
 		// calculate matrix with recursive formula
+
 		tours = calculateTours(matrix, tours, solution);
+		
 		// got the tour as a list via backtracking
 
 		solution = calculateRoute(tours, matrix);
@@ -32,6 +47,7 @@ public class DynamicSOP {
 	private static List<Integer> calculateRoute(int[][] tours, int[][] matrix) {
 		// create List to return the tour
 		List<Integer> solution = new ArrayList<Integer>();
+		int costs = -1;
 		// go back through the array
 		// get start point n
 		int n = matrix.length;
@@ -53,11 +69,17 @@ public class DynamicSOP {
 						&& tours[i - 1][binVal] + matrix[i][curr] < tours[cl - 1][binVal] + matrix[cl][curr])
 					cl = i;
 			}
+			if (solution.isEmpty())
+				costs = tours[cl - 1][binVal];
+			
 			curr = cl;
 			solution.add(0, curr);
 			binVal -= (int) Math.pow(2, curr - 1);
 			visited[curr] = true;
+			if(solution.size() == n-2)
+				costs += matrix[0][curr];
 		}
+		
 		return solution;
 	}
 
@@ -81,6 +103,15 @@ public class DynamicSOP {
 		/*
 		 * Start Algorithm:
 		 */
+		/*
+		 * initialize values for the subtours with length one which are only the
+		 * values in matrix[0][i-1] for every vertex i;
+		 */
+		for (int i = 1; i <= n - 2; i++)
+			tours[i - 1][(int) Math.pow(2, i - 1)] = matrix[0][i]; ///// check
+																	///// it\\\\\\\\
+		
+		
 		// create boolean array to represent sets of vertices and a variable for
 		boolean[] binSet = new boolean[v];
 		// start with sets of one
@@ -129,10 +160,7 @@ public class DynamicSOP {
 	}
 
 	private static int minSubtour(double d, int[][] matrix, int[][] tours, int goal, boolean[] binSet) {
-		// debugging
-		int a = 0;
-		if (d == 13)
-			a = 4;
+
 		// calculate representing value
 		int binVal = (int) d;
 		// check if we have a ZweierPotenz
@@ -187,8 +215,6 @@ public class DynamicSOP {
 	}
 
 	private static int changeSet(boolean[] binSet, int m) {
-		// get length of binSet
-		int v = binSet.length;
 
 		// ----------------------------------------
 		// check increase m
