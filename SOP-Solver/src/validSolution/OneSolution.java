@@ -58,6 +58,11 @@ public class OneSolution {
 			}
 			if(min == Integer.MAX_VALUE){
 				//no node was found to go on with. we need to go back to the last node and try again with another
+				if(currentNode == 0){
+					//there is no node we didn't try to pick from the starting node on
+					//there is no valid solution in this SOP-instance
+					return null;
+				}
 				int lastNode = solution[solCounter-1];
 				currentNode = lastNode;
 			} else {
