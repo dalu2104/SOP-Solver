@@ -45,7 +45,6 @@ public class sa {
 		double tempDecr;
 		double temp;
 		int itera;
-		
 
 		// Executing algorithm according to user and calculating execution
 		// time.
@@ -99,6 +98,12 @@ public class sa {
 		// calculate the costs for a solution only once
 		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
 		s0.setSolution(OneSolution.findSolution(A));
+		// check if there is a valid solution to the problem, if not the greedy
+		// algorithm would tell us.
+		if (s0.getSolution() == null) {
+			// there is no valid solution for this test instance.
+			return null;
+		}
 		s0.setCost(Utility.cost(s0.getSolution(), A));
 		ExeTimeSolutionCost s1 = new ExeTimeSolutionCost();
 
@@ -163,6 +168,12 @@ public class sa {
 		// calculate the costs for a solution only once.
 		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
 		s0.setSolution(OneSolution.findSolution(A));
+		// check if there is a valid solution to the problem, if not the greedy
+		// algorithm would tell us.
+		if (s0.getSolution() == null) {
+			// there is no valid solution for this test instance.
+			return null;
+		}
 		s0.setCost(Utility.cost(s0.getSolution(), A));
 		ExeTimeSolutionCost s1 = new ExeTimeSolutionCost();
 		// user input

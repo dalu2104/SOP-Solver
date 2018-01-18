@@ -113,6 +113,11 @@ public class Exe {
 				ExeTimeSolutionCost saSol1 = sa.simulatedAnnealing(matrix, true);
 				solution = saSol1.getSolution();
 				elapsedTime = saSol1.getTimeForExecution();
+				if (solution == null) {
+					// the algorithm did not find a valid solution (maybe there
+					// is none)
+					System.out.println("The Algorithm didn't find a valid solution in Time: " + elapsedTime + "ms.");
+				}
 				break;
 			case 7:
 				// Time tracking for SA happens internally, due to expanded user
@@ -120,6 +125,11 @@ public class Exe {
 				ExeTimeSolutionCost saSol2 = sa.simulatedAnnealing(matrix, false);
 				solution = saSol2.getSolution();
 				elapsedTime = saSol2.getTimeForExecution();
+				if (solution == null) {
+					// the algorithm did not find a valid solution (maybe there
+					// is none)
+					System.out.println("The Algorithm didn't find a valid solution in Time: " + elapsedTime + "ms.");
+				}
 				break;
 			case 8:
 				startTime = TimeStartAndStop.startTime();
@@ -129,7 +139,6 @@ public class Exe {
 					// the algorithm did not find a valid solution (maybe there
 					// is none)
 					System.out.println("The Algorithm didn't find a valid solution in Time: " + elapsedTime + "ms.");
-					return;
 				}
 				break;
 			case 9:
