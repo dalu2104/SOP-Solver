@@ -2,6 +2,7 @@ package execution;
 
 import java.io.*;
 import java.util.List;
+
 import convertSOPFileToArray.parser;
 import dynamicProgramming.DynamicSOP;
 import genetic.StartGenAlg;
