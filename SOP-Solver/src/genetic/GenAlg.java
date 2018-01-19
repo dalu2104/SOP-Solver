@@ -47,14 +47,6 @@ public class GenAlg {
 	private int bestRunSolutionLength;
 	
 	/**
-	 * The sum of the shortest value of each column (without 0, -1 and 1.000.000).
-	 * It is used in the fitness function to get a constant value which scales with the length
-	 * 		of the edges in the given instance.
-	 * Note that it should be shorter than every actual path through the graph.
-	 */
-	private int shortDistance;
-	
-	/**
 	 * Scales the modification on the fitness-value of a path, if it is a valid solution.
 	 * If C is 1.5 for example, the fitness-value is 1.5 times bigger than if it was not valid.
 	 */
@@ -78,7 +70,6 @@ public class GenAlg {
 		dim = matrix[0].length-2;
 		genSize = 4 * dim;
 		iterations = 10 * dim;
-		shortDistance = calculateShortDistance(matrix);
 		
 		int[][] generation = new int[genSize][dim];
 		
@@ -191,7 +182,7 @@ public class GenAlg {
 		//System.out.println("Generation");//TODO delete
 		double[] fitness = new double[genSize];
 		
-		/*	current Fitness-function is:  		shortDistance
+		/*	current Fitness-function is:  		       1
 		 * 								 -----------------------------     * C 
 		 * 								  length of the path to rate      |----| -> only if the path is valid
 		 */
@@ -201,7 +192,7 @@ public class GenAlg {
 			if(isValid(generation[path], matrix)){
 				//System.out.println("valid found");//TODO delete
 				//the path is a valid solution for the SOP-instance
-				fitness[path] = (double) shortDistance / pathLength * C;
+				fitness[path] = (double) 1 / pathLength * C;
 				if(bestRunSolution == null){
 					//it is the first time that a valid solution is found
 					bestRunSolution = new int[dim];
@@ -214,7 +205,7 @@ public class GenAlg {
 				}
 			} else {
 				//the path is not a valid solution
-				fitness[path] = (double) shortDistance / pathLength;
+				fitness[path] = (double) 1 / pathLength;
 			}
 			//System.out.println("path: " + arrayToString(generation[path]) + ", length: " + pathLength + ", fitness: " + fitness[path]);//TODO delete
 		}
@@ -274,35 +265,14 @@ public class GenAlg {
 	 * @return true, if the path is a valid solution for the instance and false otherwise.
 	 */
 	private boolean isValid(int[] path, int[][] matrix){
-		for(int node = 0; node < path.length; node++){
-			List<Integer> nodeDeps = new ArrayList<Integer>();
-			//putting all nodes that have to be visited before the current node in the list (excluding the starting point and
-			//		the destination)
-			for(int i=1; i < matrix[0].length -1; i++){
-				if(matrix[path[node]][i] == -1){
-					//i has to be visited before node
-					nodeDeps.add(i);
+		for(int i = 0; i < path.length; i++){
+			for(int j = 0; j < i; j++){
+				//matrix[a][b] == -1 if b has to be visited before a
+				if(matrix[path[j]][path[i]] == -1){
+					return false;
 				}
 			}
-			//now nodeDeps contains all the nodes that have to be visited before the current node
-			//if there is a dependency but the current node is the first one in the path, the path is no valid solution
-			if(node == 0 && !nodeDeps.isEmpty()){
-				return false;
-			}
-			//if one of the nodes in the list is not visited before the current node in the path the path is no valid solution
-			//all fulfilled dependencies are now removed from the list
-			for(int i=0; i < node; i++){
-				if(nodeDeps.contains(path[i])){
-					//the node is included in the path before the current node, so the dependency is fulfilled
-					//the cast is necessary because we don't want to remove the element with index i but i itself from the list
-					nodeDeps.remove((Integer) path[i]);
-				}
-			}
-			//now all fulfilled dependencies are removed from the list. if there is still a node on the list the path is no valid solution
-			if(!nodeDeps.isEmpty()){
-				return false;
-			}
-		}
+		}	
 		return true;
 	}
 	
@@ -343,35 +313,6 @@ public class GenAlg {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Calculates the sum of the shortest value of each column (without 0, -1 and 1.000.000).
-	 * The 1.000.000 must be left out because the last column does only include 1.000.000 and 0
-	 * 		in many instances. In the instances, it is only used to avoid picking the distance
-	 * 		between the starting node and the destination.
-	 * 
-	 * @param matrix
-	 * 			the given instance of the SOP-problem.
-	 * @return a sum of short edges in the graph.
-	 * 			Note that it should be shorter than every actual path through the graph.
-	 */
-	private int calculateShortDistance(int[][] matrix){
-		int result = 0;
-		int allDim = matrix[0].length;
-		for(int i=0; i < allDim; i++){
-			int min = Integer.MAX_VALUE;
-			for(int j=0; j < allDim; j++){
-				int value = matrix[i][j];
-				if(value != -1 && value != 0 && value != 1000000 && value < min){
-					min = value;
-				}
-			}
-			if(min != Integer.MAX_VALUE){
-				result += min;
-			}
-		}
-		return result;
 	}
 	
 	/**

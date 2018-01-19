@@ -180,7 +180,7 @@ public class Exe {
 	 * of the list and from the last vertex of the list to the end vertex are
 	 * added to the cost as well.
 	 */
-	private static int calculateCost(int[][] matrix, List<Integer> solution) {
+	public static int calculateCost(int[][] matrix, List<Integer> solution) {
 		int cost = 0;
 		// distance from the start vertex to the first vertex of the list
 		cost += matrix[0][solution.get(0)];
