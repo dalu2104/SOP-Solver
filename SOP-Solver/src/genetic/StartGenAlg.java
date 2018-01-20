@@ -32,11 +32,20 @@ public class StartGenAlg {
 
 		//for explenation of the decrement see GenAlg.dim
 		int dim = matrix[0].length -2;
-		//System.out.println(dim);//TODO delete
+
+		//checking for irregular instances
 		if(dim < 0){
+			//The given instance has just one node (which is the start and end node), there is no path to find.
 			return null;
 		}else if(dim == 0){
+			//The given matrix contains only the start and the end node, the path between them is empty.
 			return new ArrayList<Integer>();
+		}else if(dim == 1){
+			//The given instance contains only one node between the start and the end node.
+			//It is the only node in the return-path.
+			ArrayList<Integer> solution = new ArrayList<Integer>();
+			solution.add(1);
+			return solution;
 		}
 		
 		//Saves the best solution path of all runs through the genetic Algorithm and is returned later.

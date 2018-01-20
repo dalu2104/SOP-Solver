@@ -47,12 +47,11 @@ public class GenAlgTest {
 		matrix = parse(pathToTestInstances + "zEmpty.sop");
 	}
 
-	@Test
+	@Test(expected = java.util.NoSuchElementException.class)
 	public void noMatrixTest() {
 
 		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zNoMatrix.sop");
-		assertNull(StartGenAlg.runAlg(matrix));
 	}
 
 	@Test
@@ -69,12 +68,19 @@ public class GenAlgTest {
 		matrix = parse(pathToTestInstances + "zNull.sop");
 		assertEquals(0, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
-
+	
 	@Test
-	public void oneNodeTest() {
+	public void oneNodeExlStartStopTest() {
 		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zOneNode.sop");
+		matrix = parse(pathToTestInstances + "zOneNodeExlStartStop.sop");
 		assertEquals(3, calculate(matrix, StartGenAlg.runAlg(matrix)));
+	}
+	
+	@Test
+	public void oneNodeInclStartStopTest() {
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zOneNodeInclStartStop.sop");
+		assertNull(StartGenAlg.runAlg(matrix));
 	}
 
 	@Test
