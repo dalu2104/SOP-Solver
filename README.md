@@ -6,16 +6,9 @@ USAGE (.bat for Windows, .sh for Linux):
 2) Make sure that a current JDK is available in the environment variables.
 3) On Linux, make sure you have execution rights for the script files. If not, execute `chmod 711 *.sh`.
 3) Compile programm with compile.bat/compile.sh  
-4) Run programm with SOP-Solver.bat/SOP-Solver.sh  
+4.1) Run programm with SOP-Solver.bat/SOP-Solver.sh  
+4.2) To run programm from outside this directory use `java -cp build execution.Exe $PWD/SOP-Instanzen/$dateiname` with `/` for Linux and `\` WIndows.
 [5) Undo the compilation with undoCompile.bat/undoCompile.sh.]  
 
-Status:
-- Greedy algorithms and algorithms for feasible solution have been added. Working on Algorithms with better runtime. 
-
-TODO-Liste:
-1) Greedy oder anderes heuristisches Verfahren [DONE] && SOP-Instanzen aus der TSPLIB einlesen [DONE].
-2) Exaktes Verfahren (mit optimaler Lösung, Laufzeit egal). [DONE]
-3) Verbesserte Algorithmen mit besserer Laufzeit.
-
-E-mail Adresse von Alexandra= ala@...
+Contact: stu124145@mail.uni-kiel.de
 
