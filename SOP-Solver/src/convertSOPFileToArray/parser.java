@@ -2,6 +2,7 @@ package convertSOPFileToArray;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -30,27 +31,35 @@ public class parser {
 	 * @throws FileNotFoundException
 	 *             If the file is not found.
 	 */
-	public static int[][] parse(String pathString) throws FileNotFoundException {
+	public static int[][] parse(String pathString) throws FileNotFoundException, IllegalArgumentException {
 		/* INITIALIZATION */
 		File file = new File(pathString);
 		int[][] returnArray = null;
 		int dimension;
 
 		Scanner s = new Scanner(file);
+		
+		try{
 
-		/* Find the dimension in the file so we can initiate the array. */
-		while (!s.hasNext("DIMENSION:")) {
+			/* Find the dimension in the file so we can initiate the array. */
+			while (!s.hasNext("DIMENSION:")) {
+				s.next();
+			}
 			s.next();
-		}
-		s.next();
-
-		// s.findInLine("DIMENSION:");
-		if (s.hasNextInt()) {
-			dimension = s.nextInt();
-			returnArray = new int[dimension][dimension];
-		} else {
+	
+			// s.findInLine("DIMENSION:");
+			if (s.hasNextInt()) {
+				dimension = s.nextInt();
+				returnArray = new int[dimension][dimension];
+			} else {
+				s.close();
+				throw new IllegalArgumentException("Instance is incomplete.");
+			}
+		
+		} catch(NoSuchElementException e){
+			//there were no more tokens available before the DIMENSION-Field was found
 			s.close();
-			return null;
+			throw new IllegalArgumentException("Instance must have DIMENSION-Field.");
 		}
 
 		// Find the beginning of the matrix. The info text always ends with
@@ -67,10 +76,16 @@ public class parser {
 		// next should be the matrix that is needed. Read the matrix as long
 		// as the array has space left. Array should be exactly as big as
 		// there are numbers to be stored.
-		for (int i = 0; i < dimension; i++) {
-			for (int j = 0; j < dimension; j++) {
-				returnArray[i][j] = Integer.parseInt(s.next());
+		try{
+			for (int i = 0; i < dimension; i++) {
+				for (int j = 0; j < dimension; j++) {
+					returnArray[i][j] = Integer.parseInt(s.next());
+				}
 			}
+		} catch(NumberFormatException e){
+			//the DIMENSION-Field in the instance was to small
+			s.close();
+			throw new IllegalArgumentException("DIMENSION-Field doesn't match with the matrix.");
 		}
 
 		// close the Scanner.

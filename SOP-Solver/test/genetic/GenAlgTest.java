@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -39,6 +40,41 @@ public class GenAlgTest {
 		// path is done and now directs to the "SOP-Instanzen" folder.
 		pathToTestInstances = path;
 	}
+	
+	@Test(expected = FileNotFoundException.class)
+	public void noRealFileTest(){
+		
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "noRealFile.sop");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void dimensionTooBigTest(){
+		
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zDimensionTooBig.sop");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void dimensionTooSmallTest(){
+		
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zDimensionTooSmall.sop");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void emptyTest() {
+
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zEmpty.sop");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void noMatrixTest() {
+
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zNoMatrix.sop");
+	}
 
 	@Test
 	public void noPathTest() {
@@ -54,12 +90,19 @@ public class GenAlgTest {
 		matrix = parse(pathToTestInstances + "zNull.sop");
 		assertEquals(0, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
-
+	
 	@Test
-	public void oneNodeTest() {
+	public void oneNodeExlStartStopTest() {
 		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zOneNode.sop");
+		matrix = parse(pathToTestInstances + "zOneNodeExlStartStop.sop");
 		assertEquals(3, calculate(matrix, StartGenAlg.runAlg(matrix)));
+	}
+	
+	@Test
+	public void oneNodeInclStartStopTest() {
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zOneNodeInclStartStop.sop");
+		assertNull(StartGenAlg.runAlg(matrix));
 	}
 
 	@Test
@@ -73,7 +116,7 @@ public class GenAlgTest {
 	public void onlyStartStopTest() {
 		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zOnlyStartStop.sop");
-		assertEquals(0, calculate(matrix, StartGenAlg.runAlg(matrix)));
+		assertEquals(5, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
 
 	@Test

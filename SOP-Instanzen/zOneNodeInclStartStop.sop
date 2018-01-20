@@ -1,11 +1,11 @@
-NAME: zOnlyStartStop.sop
+NAME: zOneNodeInclStartStop.sop
 TYPE: SOP
 COMMENT: Testinstanz von Thore Paetsch
-DIMENSION: 2
+DIMENSION: 1
 EDGE_WEIGHT_TYPE: EXPLICIT
 EDGE_WEIGHT_FORMAT: FULL_MATRIX 
 EDGE_WEIGHT_SECTION
-2
-    0    5
-   -1    0
+1
+    0
+
 EOF

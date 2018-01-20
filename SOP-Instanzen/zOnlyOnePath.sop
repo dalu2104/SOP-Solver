@@ -7,8 +7,8 @@ EDGE_WEIGHT_FORMAT: FULL_MATRIX
 EDGE_WEIGHT_SECTION
 6
     0    0    0    0    0 1000000
-   -1    0    1   -1   -1    0
-   -1   -1    0    2   -1    0
+   -1    0    1    1    1    0
+   -1   -1    0    2    2    0
    -1   -1   -1    0    3    0
    -1   -1   -1   -1    0    0
    -1   -1   -1   -1   -1    0

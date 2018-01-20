@@ -45,6 +45,9 @@ public class Exe {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: " + args[0]);
 			return;
+		} catch (IllegalArgumentException e){
+			System.out.println("Test instance "+ args[0] + " is not correct.");
+			return;
 		}
 
 		while (true) {
@@ -182,6 +185,12 @@ public class Exe {
 	 * added to the cost as well.
 	 */
 	public static int calculateCost(int[][] matrix, List<Integer> solution) {
+		if(solution.isEmpty()){
+			//this is the case, if only the start and the end vertex are in the matrix.
+			//the algorithms don't return null, because there is a solution
+			//the list is empty because the algorithms solutions don't include the start and end vertex
+			return matrix[0][1];
+		}
 		int cost = 0;
 		// distance from the start vertex to the first vertex of the list
 		cost += matrix[0][solution.get(0)];
