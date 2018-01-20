@@ -128,15 +128,21 @@ public class Sa {
 		// Runtime now O(n^2). Still a lot faster than brute force algorithm.
 		int n = s0.getSolution().size();
 		double T = 200;
-		// testing has shown that instances with dimensions of 110 or higher do
+		// testing has shown that instances with dimensions of 100 or higher do
 		// not terminate in realistic time, so we generate an upper bound.
 		int kmax;
-		if (n < 110) {
+		if (n < 100) {
 			kmax = 120 * n * n;
 		} else {
-			kmax = 120 * 110 * 110;
+			kmax = 120 * 100 * 100;
 		}
-		double tempDecr = 0.00001;
+		//Bigger instances should cool down slower.
+		double tempDecr;
+		if(n<55){
+			tempDecr = 0.00001;
+		} else{
+			tempDecr = 0.000001;
+		}
 
 		// saves the global best solution. Initial solution is created valid
 		// solution.

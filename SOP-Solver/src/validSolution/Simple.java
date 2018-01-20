@@ -5,8 +5,8 @@ import java.util.List;
 
 /**
  * Add simple algorithm that solves an SOP problem in indefinite runtime.
- * MODIFIED BRUTE-FORCE-ALGORITHMN FROM recursiveBruteForce SO IT WILL JUST PICK
- * THE FIRST SOLUTION IT FINDS. ALSO DETECTS IF THERE IS NO SOLUTION.
+ * MODIFIED BRUTE-FORCE-ALGORITHMN FROM recursiveBruteForce. Detects instances with no valid solution and will return null.
+ * Also picks its next vertex Greedy style.
  * 
  * @author D. LUCAS
  *
@@ -28,6 +28,7 @@ public class Simple {
 		DIM = A[0].length;
 		List<Integer> path = new ArrayList<Integer>();
 		List<Integer> curPath = new ArrayList<Integer>();
+		curPath.add(0);
 		path = recursion(curPath);
 		if (path == null) {
 			return path;
@@ -42,7 +43,7 @@ public class Simple {
 	/**
 	 * Picks all nodes that can be picked to lead to a valid solution. If the
 	 * path is not complete, calls itself again to pick more nodes and complete
-	 * the path.
+	 * the path. Picks nearest nodes first.
 	 * 
 	 * @param current
 	 *            the current solution-path so far.
@@ -51,85 +52,99 @@ public class Simple {
 	 */
 	private static List<Integer> recursion(List<Integer> current) {
 		List<Integer> breakOutOfRecursion = null;
-		for (int i = 0; i < DIM; i++) {
-			if (validPath(i, current)) {
+		// array that saves us what we have visited so far.
+		boolean[] visited = new boolean[DIM];
+		initializeVisited(visited, current);
+		// distance from current node to node at specified index.
+		int[] distance = new int[DIM];
+		boolean invalid = initializeDistance(distance, current);
+		// reached dead end. current last vertex has some unfulfilled dependencies. Jump out of this loop.
+		if (invalid) {
+			return null;
+		}
 
-				current.add(i);
-				// checking if the solution-Path is complete.
-				// it is complete with DIM-1 nodes (because starting point and
-				// destination have to miss)
-				if (current.size() < DIM) {
-					// cur-Path is not a complete solution-Path
-					breakOutOfRecursion = recursion(current);
-				} else {
-					return current;
+		// we can visit another vertex.
+		while (visitable(visited)) {
+			// choose shortest reachable vertex.
+			int minDist = Integer.MAX_VALUE;
+			int nextNode = -1;
+			for (int i = 0; i < distance.length; i++) {
+				if (visited[i] == false) {
+					if (distance[i] < minDist) {
+						minDist = distance[i];
+						nextNode = i;
+					}
 				}
-
-				// we found a valid solution in recursion, break out of
-				// recursion.
-				if (breakOutOfRecursion != null) {
-					return current;
-				}
-				current.remove(current.size() - 1);
-
 			}
+			// shortest distance, add node and mark as visited.
+			current.add(nextNode);
+			visited[nextNode] = true;
+
+			// checking if the solution-Path is complete.
+			// it is complete with DIM-1 nodes (because starting point and
+			// destination have to miss)
+			if (current.size() < DIM) {
+				// cur-Path is not a complete solution-Path
+				breakOutOfRecursion = recursion(current);
+			} else {
+				return current;
+			}
+
+			// we found a valid solution in recursion, break out of
+			// recursion.
+			if (breakOutOfRecursion != null) {
+				return current;
+			}
+			current.remove(current.size() - 1);
+
 		}
 		// no valid soluion was found in this branch, or if terminates, in the
 		// whole matrix.
 		return null;
+
 	}
 
-	/**
-	 * Checks if adding a given node to a given solution-path can lead to a
-	 * valid solution for the SOP-problem. Contains checking if the node is not
-	 * already in the path and if all dependencies are fulfilled after adding
-	 * it. *
-	 * 
-	 * @param node
-	 *            the given node
-	 * @param current
-	 *            the given solution-path to check.
-	 * @return true, adding the node to the path can lead to a valid solution
-	 *         for the problem.
+	/** Initializes the distance array according to our current last vertex in list. From this last vertex, calculates distance with the help of the matrix.
+ 	 * 
+	 * @param distance Array that saves the distance to the vertex at the index.
+	 * @param list Contains the vertex we are looking at, at the last available index.
+	 * @return True, if there is an unfulfilled dependency and false otherwise.
 	 */
-	private static boolean validPath(int node, List<Integer> current) {
-		boolean result = true;
-		if (!current.isEmpty()) {
-			if (current.size() == DIM - 1) {
-				// only the destination is missing
-				if (node != DIM - 1) {
-					result = false;
-				}
-			} else {
-				// there are still more nodes than the destination missing
-				if (node == DIM - 1) {
-					// we don't want the destination node if we don't have all
-					// the other nodes in the path
-					result = false;
-				} else if (node == 0) {
-					// we don't want the starting point unless curPath is empty
-					result = false;
-				} else if (current.contains(node)) {
-					// checking if the node is already in the path
-					result = false;
-				} else {
-					// checking the dependencies
-					for (int i = 0; i < DIM; i++) {
-						if (matrix[node][i] == -1) {
-							if (!current.contains(i)) {
-								result = false;
-							}
-						}
-					}
-				}
+	private static boolean initializeDistance(int[] distance, List<Integer> list) {
+		for (int i = 0; i < distance.length; i++) {
+			// detected that a vertex that is not in solution but needs to come
+			// before
+			if (matrix[list.get(list.size() - 1)][i] == -1 && !list.contains(i)) {
+				return true;
 			}
-		} else {
-			// curPath is empty, only the starting point is allowed
-			if (node != 0) {
-				result = false;
+			distance[i] = matrix[list.get(list.size() - 1)][i];
+		}
+		return false;
+	}
+	
+	/** Initializes the visited array. Sets array to true, if node is already in the list.
+	 * 
+	 * @param visited	Array to be initialized.
+	 * @param list	List that contains all nodes that have been visited.
+	 */
+	private static void initializeVisited(boolean[] visited, List<Integer> list) {
+		for (int i : list) {
+			visited[i] = true;
+		}
+	}
+
+	/** Tells us whether there is another vertex that can be visited.
+	 * 
+	 * @param visited Array that tells us, if there is another vertex to be visited.
+	 * @return Returns true, if we can visit another vertex, and false otherwise.
+	 */
+	private static boolean visitable(boolean[] visited) {
+		for (int i = 0; i < visited.length; i++) {
+			if (visited[i] == false) {
+				return true;
 			}
 		}
-		return result;
+		return false;
 	}
 
 }
