@@ -5,83 +5,131 @@ import java.util.List;
 
 /**
  * Add simple algorithm that solves an SOP problem in indefinite runtime.
+ * MODIFIED BRUTE-FORCE-ALGORITHMN FROM recursiveBruteForce SO IT WILL JUST PICK
+ * THE FIRST SOLUTION IT FINDS. ALSO DETECTS IF THERE IS NO SOLUTION.
  * 
  * @author D. LUCAS
  *
  */
 public class Simple {
+	private static int[][] matrix;
+	private static int DIM;
 
 	/**
-	 * Implementation of the algorithm specified in README.txt.
+	 * Finds the valid Solution for a given SOP-Instance.
 	 * 
 	 * @param A
-	 *            given Matrix that contains the graph and the corresponding
-	 *            distances.
+	 *            given MAtrix
+	 * @return a result as List of node-numbers. Or null, if no valid solution
+	 *         was found.
 	 */
 	public static List<Integer> firstIdea(int[][] A) {
-		// Initialization of needed variables. Array.length works, because we
-		// can assume that it is a quadratic array.
-		int CurNumDeps = -1;
-		int vertMaxDeps = -1;
-		List<Integer> B = new ArrayList<Integer>();
-		/*
-		 * Number of vertexes that depend on a vertex are saved in this array.
-		 * Vertexes that have most dependent other vertexes will be added first
-		 * to the Tour. If two vertexes have the same amount of dependencies we
-		 * check if they depend on each other and the vertex that needs to come
-		 * first will be taken first into the tour. If they don't, we will just
-		 * take the first on that is found in the matrix.
-		 */
-		int[] depsPerVert = new int[A.length];
-		for (int i = 0; i < depsPerVert.length; i++) {
-			if ((i == 0) || (i == depsPerVert.length - 1)) {
-				depsPerVert[i] = -1;
-			} else {
-				depsPerVert[i] = 0;
-			}
+		matrix = A;
+		DIM = A[0].length;
+		List<Integer> path = new ArrayList<Integer>();
+		List<Integer> curPath = new ArrayList<Integer>();
+		path = recursion(curPath);
+		if (path == null) {
+			return path;
 		}
+		// we need to delete the first and the last node, because the
+		// Main-method will add them.
+		path.remove(0);
+		path.remove(path.size() - 1);
+		return path;
+	}
 
-		/*
-		 * Counting the number of vertexes that need to come after a vertex i.
-		 * We use the definition, that if A[i][j] =-1 then j must come before i.
-		 * So we count per column, how many vertexes depend on a vertex.
-		 * Starting at 1 and Ending at n-2 because 0 is the Start and n-1 is the
-		 * end vertex.
-		 */
-		for (int v = 1; v < A.length - 1; v++) {
-			for (int i = 1; i < A.length - 1; i++) {
-				if (A[i][v] == -1) {
-					depsPerVert[v]++;
-				}
-			}
-		}
+	/**
+	 * Picks all nodes that can be picked to lead to a valid solution. If the
+	 * path is not complete, calls itself again to pick more nodes and complete
+	 * the path.
+	 * 
+	 * @param current
+	 *            the current solution-path so far.
+	 * 
+	 * @return A valid path or null if no node was found.
+	 */
+	private static List<Integer> recursion(List<Integer> current) {
+		List<Integer> breakOutOfRecursion = null;
+		for (int i = 0; i < DIM; i++) {
+			if (validPath(i, current)) {
 
-		/*
-		 * Searching for the vertexes with the most vertexes that depend on it,
-		 * as described above. There are n-Start-End vertexes we need to add to
-		 * the tour so A.length-2.
-		 */
-		while (B.size() < A.length - 2) {
-			for (int v = 1; v < A.length - 1; v++) {
-				if (depsPerVert[v] > CurNumDeps) {
-					CurNumDeps = depsPerVert[v];
-					vertMaxDeps = v;
+				current.add(i);
+				// checking if the solution-Path is complete.
+				// it is complete with DIM-1 nodes (because starting point and
+				// destination have to miss)
+				if (current.size() < DIM) {
+					// cur-Path is not a complete solution-Path
+					breakOutOfRecursion = recursion(current);
 				} else {
-					if (CurNumDeps != -1) {
-						if (depsPerVert[v] == CurNumDeps) {
-							if (A[vertMaxDeps][v] == -1) {
-								vertMaxDeps = v;
+					return current;
+				}
+
+				// we found a valid solution in recursion, break out of
+				// recursion.
+				if (breakOutOfRecursion != null) {
+					return current;
+				}
+				current.remove(current.size() - 1);
+
+			}
+		}
+		// no valid soluion was found in this branch, or if terminates, in the
+		// whole matrix.
+		return null;
+	}
+
+	/**
+	 * Checks if adding a given node to a given solution-path can lead to a
+	 * valid solution for the SOP-problem. Contains checking if the node is not
+	 * already in the path and if all dependencies are fulfilled after adding
+	 * it. *
+	 * 
+	 * @param node
+	 *            the given node
+	 * @param current
+	 *            the given solution-path to check.
+	 * @return true, adding the node to the path can lead to a valid solution
+	 *         for the problem.
+	 */
+	private static boolean validPath(int node, List<Integer> current) {
+		boolean result = true;
+		if (!current.isEmpty()) {
+			if (current.size() == DIM - 1) {
+				// only the destination is missing
+				if (node != DIM - 1) {
+					result = false;
+				}
+			} else {
+				// there are still more nodes than the destination missing
+				if (node == DIM - 1) {
+					// we don't want the destination node if we don't have all
+					// the other nodes in the path
+					result = false;
+				} else if (node == 0) {
+					// we don't want the starting point unless curPath is empty
+					result = false;
+				} else if (current.contains(node)) {
+					// checking if the node is already in the path
+					result = false;
+				} else {
+					// checking the dependencies
+					for (int i = 0; i < DIM; i++) {
+						if (matrix[node][i] == -1) {
+							if (!current.contains(i)) {
+								result = false;
 							}
 						}
 					}
 				}
 			}
-			// add vertex with max dependencies to list and decrement accordingly.
-			B.add(vertMaxDeps);
-			depsPerVert[vertMaxDeps] = -1;
-			CurNumDeps = -1;
-			vertMaxDeps = -1;
+		} else {
+			// curPath is empty, only the starting point is allowed
+			if (node != 0) {
+				result = false;
+			}
 		}
-		return B;
+		return result;
 	}
+
 }

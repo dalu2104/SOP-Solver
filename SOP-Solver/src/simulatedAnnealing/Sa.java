@@ -9,7 +9,7 @@ import java.util.Random;
 
 import execution.ExeTimeSolutionCost;
 import execution.TimeStartAndStop;
-import validSolution.OneSolution;
+import validSolution.Simple;
 import simulatedAnnealing.Utility;
 
 /**
@@ -33,15 +33,21 @@ public class Sa {
 	 * @param defaultMode
 	 *            Indicates whether this method was called in default mode or
 	 *            not. True, if default method is called. False, otherwise.
-	 * @return A valid good solution.
-	 * @throws IOException
-	 * @throws NumberFormatException
+	 * @return An Object that saves a solution and the according costs and
+	 *         execution time. The solution is null if there is no valid path.
+	 *         An empty path if matrix has only 2 vertices (Start and stop).
 	 */
 	public static ExeTimeSolutionCost simulatedAnnealing(int[][] matrix, boolean defaultMode) {
+		ExeTimeSolutionCost returner = new ExeTimeSolutionCost();
+		// check if matrix contains more than just Start and stop vertex. No
+		// solution needed otherwise. (Return empty list).
+		if(matrix.length == 2){
+			returner.setSolution(new ArrayList<Integer>());
+			return returner;
+		}
 		// variable Initialization.
 		A = matrix;
 		long startTime = 0;
-		ExeTimeSolutionCost returner = new ExeTimeSolutionCost();
 		double tempDecr;
 		double temp;
 		int itera;
@@ -97,12 +103,12 @@ public class Sa {
 		// Saving the solution in extra objects, because this way, we need to
 		// calculate the costs for a solution only once
 		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
-		s0.setSolution(OneSolution.findSolution(A));
+		s0.setSolution(Simple.firstIdea(A));
 		// check if there is a valid solution to the problem, if not the greedy
 		// algorithm would tell us.
 		if (s0.getSolution() == null) {
 			// there is no valid solution for this test instance.
-			return null;
+			return s0;
 		}
 		s0.setCost(Utility.cost(s0.getSolution(), A));
 		ExeTimeSolutionCost s1 = new ExeTimeSolutionCost();
@@ -167,12 +173,12 @@ public class Sa {
 		// Saving the solution in extra objects, because this way, we need to
 		// calculate the costs for a solution only once.
 		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
-		s0.setSolution(OneSolution.findSolution(A));
+		s0.setSolution(Simple.firstIdea(A));
 		// check if there is a valid solution to the problem, if not the greedy
 		// algorithm would tell us.
 		if (s0.getSolution() == null) {
 			// there is no valid solution for this test instance.
-			return null;
+			return s0;
 		}
 		s0.setCost(Utility.cost(s0.getSolution(), A));
 		ExeTimeSolutionCost s1 = new ExeTimeSolutionCost();
