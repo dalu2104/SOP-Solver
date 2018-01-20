@@ -31,7 +31,7 @@ public class parser {
 	 * @throws FileNotFoundException
 	 *             If the file is not found.
 	 */
-	public static int[][] parse(String pathString) throws FileNotFoundException {
+	public static int[][] parse(String pathString) throws FileNotFoundException, IllegalArgumentException {
 		/* INITIALIZATION */
 		File file = new File(pathString);
 		int[][] returnArray = null;
@@ -82,7 +82,7 @@ public class parser {
 					returnArray[i][j] = Integer.parseInt(s.next());
 				}
 			}
-		} catch(IndexOutOfBoundsException e){
+		} catch(NumberFormatException e){
 			//the DIMENSION-Field in the instance was to small
 			s.close();
 			throw new IllegalArgumentException("DIMENSION-Field doesn't match with the matrix.");

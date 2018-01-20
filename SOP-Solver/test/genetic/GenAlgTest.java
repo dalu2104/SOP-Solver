@@ -47,6 +47,20 @@ public class GenAlgTest {
 		int[][] matrix;
 		matrix = parse(pathToTestInstances + "noRealFile.sop");
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void dimensionTooBigTest(){
+		
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zDimensionTooBig.sop");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void dimensionTooSmallTest(){
+		
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zDimensionTooSmall.sop");
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void emptyTest() {
