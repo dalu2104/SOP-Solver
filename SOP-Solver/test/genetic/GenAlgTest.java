@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -39,15 +40,22 @@ public class GenAlgTest {
 		// path is done and now directs to the "SOP-Instanzen" folder.
 		pathToTestInstances = path;
 	}
+	
+	@Test(expected = FileNotFoundException.class)
+	public void noRealFileTest(){
+		
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "noRealFile.sop");
+	}
 
-	@Test(expected = java.util.NoSuchElementException.class)
-	public void EmptyTest() {
+	@Test(expected = IllegalArgumentException.class)
+	public void emptyTest() {
 
 		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zEmpty.sop");
 	}
 
-	@Test(expected = java.util.NoSuchElementException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void noMatrixTest() {
 
 		int[][] matrix;

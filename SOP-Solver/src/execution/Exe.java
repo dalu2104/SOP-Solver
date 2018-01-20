@@ -45,6 +45,9 @@ public class Exe {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: " + args[0]);
 			return;
+		} catch (IllegalArgumentException e){
+			System.out.println("Test instance "+ args[0] + " is not correct.");
+			return;
 		}
 
 		while (true) {
