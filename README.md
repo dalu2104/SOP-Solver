@@ -6,9 +6,9 @@ USAGE (.bat for Windows, .sh for Linux):
 2) Make sure that a current JDK is available in the environment variables.
 3) On Linux, make sure you have execution rights for the script files. If not, execute `chmod 711 *.sh`.
 3) Compile programm with compile.bat/compile.sh  
-4.1) Run programm with SOP-Solver.bat/SOP-Solver.sh  
-4.2) To run programm from outside this directory use `java -cp build execution.Exe $PWD/SOP-Instanzen/$dateiname` with `/` for Linux and `\` WIndows.
-[5) Undo the compilation with undoCompile.bat/undoCompile.sh.]  
+5.1) Run programm with SOP-Solver.bat/SOP-Solver.sh  
+5.2) To run programm from outside this directory use `java -cp build execution.Exe $PWD/SOP-Instanzen/$dateiname` with `/` for Linux and `\` WIndows.
+6) If needed, undo the compilation with undoCompile.bat/undoCompile.sh. 
 
 Contact: stu124145@mail.uni-kiel.de
 
