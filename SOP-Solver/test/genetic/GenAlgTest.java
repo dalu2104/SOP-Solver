@@ -40,6 +40,21 @@ public class GenAlgTest {
 		pathToTestInstances = path;
 	}
 
+	@Test(expected = java.util.NoSuchElementException.class)
+	public void EmptyTest() {
+
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zEmpty.sop");
+	}
+
+	@Test
+	public void noMatrixTest() {
+
+		int[][] matrix;
+		matrix = parse(pathToTestInstances + "zNoMatrix.sop");
+		assertNull(StartGenAlg.runAlg(matrix));
+	}
+
 	@Test
 	public void noPathTest() {
 
@@ -73,7 +88,7 @@ public class GenAlgTest {
 	public void onlyStartStopTest() {
 		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zOnlyStartStop.sop");
-		assertEquals(0, calculate(matrix, StartGenAlg.runAlg(matrix)));
+		assertEquals(5, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
 
 	@Test

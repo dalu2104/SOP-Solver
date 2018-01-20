@@ -29,9 +29,15 @@ public class StartGenAlg {
 	 * 			Therefore contains integers higher or equal than 2.
 	 */
 	public static List<Integer> runAlg(int[][] matrix){
-		
+
 		//for explenation of the decrement see GenAlg.dim
 		int dim = matrix[0].length -2;
+		//System.out.println(dim);//TODO delete
+		if(dim < 0){
+			return null;
+		}else if(dim == 0){
+			return new ArrayList<Integer>();
+		}
 		
 		//Saves the best solution path of all runs through the genetic Algorithm and is returned later.
 		int [] bestSolution = new int[dim];
