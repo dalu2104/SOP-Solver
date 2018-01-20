@@ -50,44 +50,36 @@ public class SaTest {
 
 	@Test
 	public void nullTest() {
-		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zNull.sop");
 		assertEquals(0, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
 	}
 
-	@Test
-	public void oneNodeTest() {
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zOneNode.sop");
-		assertEquals(3, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
-	}
-
-/** BROKEN.
   	@Test
 	public void onlyOnePathTest() {
-		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zOnlyOnePath.sop");
 		assertEquals(6, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
-	}*/
+	}
 
 	@Test
 	public void onlyStartStopTest() {
-		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zOnlyStartStop.sop");
-		assertEquals(0, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
+		assertEquals(5, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
 	}
 
 	@Test
 	public void startStopDistancesTest() {
-		int[][] matrix;
 		matrix = parse(pathToTestInstances + "zStartStopDistances.sop");
 		assertEquals(3, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
 	}
-
+	
+	@Test
+	public void oneNodeExlStartStopTest() {
+		matrix = parse(pathToTestInstances + "zOneNodeExlStartStop.sop");
+		assertEquals(3, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
+	}
+	
 	@Test
 	public void sopInstancesTest() {
-		int[][] matrix;
-
 		matrix = parse(pathToTestInstances + "esc07.sop");
 		assertNotNull(Sa.simulatedAnnealing(matrix, true));
 

@@ -44,6 +44,16 @@ public class Utility {
 	 * @return True if it the tour is valid, false if not.
 	 */
 	public static boolean isValid(List<Integer> newSolution, int[][] A) {
+		//only one node between start and stop
+		if(newSolution.size()==1){
+			if(A[0][1] == -1|| A[1][2] == -1){
+				return false;
+			} else{
+				return true;
+			}
+		}
+		
+		
 		for (int i = 1; i < newSolution.size(); i++) {
 			for (int j = 0; j < i; j++) {
 				// check if another vertex has to be visited before

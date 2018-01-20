@@ -44,7 +44,17 @@ public class Sa {
 		if(matrix.length == 2){
 			returner.setSolution(new ArrayList<Integer>());
 			return returner;
+		// only one node between start and end vertex. 
+		}else if(matrix.length == 3){
+			returner.setSolution(new ArrayList<Integer>());
+			//add only vertex and check for validness.
+			returner.getSolution().add(1);
+			if(!Utility.isValid(returner.getSolution(), matrix)){
+			returner.setSolution(null);				
+			}
+			return returner;
 		}
+		
 		// variable Initialization.
 		A = matrix;
 		long startTime = 0;
