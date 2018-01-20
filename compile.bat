@@ -12,7 +12,7 @@ javac -d build -cp build "%~dp0\SOP-Solver\src\tryAll\Permutations.java"
 javac -d build "%~dp0\SOP-Solver\src\tryAll\recursiveBruteForce.java"
 
 javac -d build -cp build "%~dp0\SOP-Solver\src\simulatedAnnealing\Utility.java"
-javac -d build -cp build "%~dp0\SOP-Solver\src\simulatedAnnealing\sa.java"
+javac -d build -cp build "%~dp0\SOP-Solver\src\simulatedAnnealing\Sa.java"
 
 javac -d build -cp build "%~dp0\SOP-Solver\src\genetic\UsefulMethods.java"
 javac -d build -cp build "%~dp0\SOP-Solver\src\genetic\GenAlg.java"

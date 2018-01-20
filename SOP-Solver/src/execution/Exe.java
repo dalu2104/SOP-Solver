@@ -6,7 +6,7 @@ import java.util.List;
 import convertSOPFileToArray.parser;
 import dynamicProgramming.DynamicSOP;
 import genetic.StartGenAlg;
-import simulatedAnnealing.sa;
+import simulatedAnnealing.Sa;
 import tryAll.recursiveBruteForce;
 import tryAll.Permutations;
 import validSolution.GreedySOP;
@@ -111,7 +111,7 @@ public class Exe {
 			case 6:
 				// Time tracking for SA happens internally, due to expanded user
 				// input.
-				ExeTimeSolutionCost saSol1 = sa.simulatedAnnealing(matrix, true);
+				ExeTimeSolutionCost saSol1 = Sa.simulatedAnnealing(matrix, true);
 				solution = saSol1.getSolution();
 				elapsedTime = saSol1.getTimeForExecution();
 				if (solution == null) {
@@ -123,7 +123,7 @@ public class Exe {
 			case 7:
 				// Time tracking for SA happens internally, due to expanded user
 				// input.
-				ExeTimeSolutionCost saSol2 = sa.simulatedAnnealing(matrix, false);
+				ExeTimeSolutionCost saSol2 = Sa.simulatedAnnealing(matrix, false);
 				solution = saSol2.getSolution();
 				elapsedTime = saSol2.getTimeForExecution();
 				if (solution == null) {

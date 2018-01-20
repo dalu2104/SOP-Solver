@@ -20,7 +20,7 @@ import simulatedAnnealing.Utility;
  * @author Daniel Lucas
  *
  */
-public class sa {
+public class Sa {
 	private static int[][] A;
 	private static Random generator = new Random();
 
