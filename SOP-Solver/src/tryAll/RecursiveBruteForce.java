@@ -12,7 +12,7 @@ import java.util.List;
  * @author Thore Paetsch
  *
  */
-public class recursiveBruteForce {
+public class RecursiveBruteForce {
 	private static int[][] matrix;
 	private static int DIM;
 	private static List<Integer> bestPath;

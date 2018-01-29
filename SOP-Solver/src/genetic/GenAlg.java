@@ -50,7 +50,7 @@ public class GenAlg {
 	 * Scales the modification on the fitness-value of a path, if it is a valid solution.
 	 * If C is 1.5 for example, the fitness-value is 1.5 times bigger than if it was not valid.
 	 */
-	private final double C = 5;
+	private final double C = 2.5;
 	
 	/**
 	 * The random-generator to be used in the run of the genetic algorithm.
@@ -69,7 +69,7 @@ public class GenAlg {
 		
 		dim = matrix[0].length-2;
 		genSize = 4 * dim;
-		iterations = 10 * dim;
+		iterations = 1000 * dim;
 		
 		int[][] generation = new int[genSize][dim];
 		
@@ -179,7 +179,6 @@ public class GenAlg {
 	 * 			Fitness-values are always positive. The greatest fitness-value is the best.
 	 */
 	private double[] rateGeneration(int[][] generation, int[][] matrix){
-		//System.out.println("Generation");//TODO delete
 		double[] fitness = new double[genSize];
 		
 		/*	current Fitness-function is:  		       1
@@ -190,7 +189,6 @@ public class GenAlg {
 		for(int path = 0; path < genSize; path++){
 			int pathLength = UsefulMethods.pathLength(generation[path], matrix);
 			if(isValid(generation[path], matrix)){
-				//System.out.println("valid found");//TODO delete
 				//the path is a valid solution for the SOP-instance
 				fitness[path] = (double) 1 / pathLength * C;
 				if(bestRunSolution == null){
@@ -207,7 +205,6 @@ public class GenAlg {
 				//the path is not a valid solution
 				fitness[path] = (double) 1 / pathLength;
 			}
-			//System.out.println("path: " + arrayToString(generation[path]) + ", length: " + pathLength + ", fitness: " + fitness[path]);//TODO delete
 		}
 		return fitness;
 	}

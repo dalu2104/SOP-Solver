@@ -3,11 +3,11 @@ package execution;
 import java.io.*;
 import java.util.List;
 
-import convertSOPFileToArray.parser;
+import convertSOPFileToArray.Parser;
 import dynamicProgramming.DynamicSOP;
 import genetic.StartGenAlg;
 import simulatedAnnealing.Sa;
-import tryAll.recursiveBruteForce;
+import tryAll.RecursiveBruteForce;
 import tryAll.Permutations;
 import validSolution.GreedySOP;
 import validSolution.OneSolution;
@@ -41,7 +41,7 @@ public class Exe {
 		// parse the file given as an argument when the program was executed
 		int[][] matrix;
 		try {
-			matrix = parser.parse(args[0]);
+			matrix = Parser.parse(args[0]);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: " + args[0]);
 			return;
@@ -103,7 +103,7 @@ public class Exe {
 				break;
 			case 4:
 				startTime = TimeStartAndStop.startTime();
-				solution = recursiveBruteForce.perfectResult(matrix);
+				solution = RecursiveBruteForce.perfectResult(matrix);
 				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;
 			case 5:

@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import org.junit.Before;
 import org.junit.Test;
 
-import convertSOPFileToArray.parser;
+import convertSOPFileToArray.Parser;
 import execution.Exe;
 import simulatedAnnealing.Sa;
 
@@ -92,7 +92,7 @@ public class SaTest {
 	private int[][] parse(String file) {
 		int[][] matrix;
 		try {
-			matrix = parser.parse(file);
+			matrix = Parser.parse(file);
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: " + file);
 			return null;

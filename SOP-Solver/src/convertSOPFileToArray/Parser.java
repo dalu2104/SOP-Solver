@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author D. LUCAS
  *
  */
-public class parser {
+public class Parser {
 	/*
 	 * README!: Wenn man eine eigene Testinstanz schreiben moechte, sie die
 	 * Felder DIMENSION: und EDGE_WEIGHT_SECTION mit anhaengendem Zahlenwert
