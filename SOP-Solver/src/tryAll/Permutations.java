@@ -35,8 +35,7 @@ public class Permutations {
 	}
 
 	/**
-	 * A Method trying all combinations and save the best one. The method is inspired by the program for searching all Permutations
-	 * from "http://www2.cs.uni-paderborn.de/cs/ag-boettcher/lehrealt/swe1-w02/loesungen/A27.java"(01.12.17).
+	 * A Method trying all combinations and save the best one.
 	 * 
 	 * @param n
 	 *            The lenngth of the tour
@@ -110,10 +109,10 @@ public class Permutations {
 		// look for all nodes if the dependencies are fullfilled
 		for (int i = 0; i < newSolution.size() - 1; i++) {
 			// mark a node as visited
-			visited[newSolution.get(i) - 1] = true;
+			visited[newSolution.get(i)] = true;
 			for (int j = 1; j < n; j++) {
 				// check if another one has to be visited before
-				if (A[newSolution.get(i) - 1][j] == -1 && visited[j] == false)
+				if (A[newSolution.get(i) ][j] == -1 && visited[j] == false)
 					return false;
 			}
 		}
@@ -135,7 +134,7 @@ public class Permutations {
 
 		int distance = 0;
 		for (int i = 0; i < bestSolution.size() - 1; i++) {
-			distance += A[bestSolution.get(i) - 1][bestSolution.get(i + 1) - 1];
+			distance += A[bestSolution.get(i)][bestSolution.get(i + 1)];
 		}
 		return distance;
 	}
