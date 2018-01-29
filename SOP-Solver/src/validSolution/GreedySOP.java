@@ -45,7 +45,7 @@ public class GreedySOP {
 			// calculate nearest neighbor
 			nextNode = nearestNeighbor(A, currentNode, visited);
 			//adding the nearest available Node to the solution. +1 because we count nodes from 1 and not from 0, like in the Matrix
-			solution.add(nextNode + 1);
+			solution.add(nextNode);
 			// in the next step we will look from the added node
 			currentNode = nextNode;
 			// mark the node as visited
@@ -104,3 +104,4 @@ public class GreedySOP {
 		return true;
 	}
 }
+
