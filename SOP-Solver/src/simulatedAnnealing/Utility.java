@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that offers utility methods for the Simulated Annealing algorithmn.
- * These methods include switchting two vertices in a list, Checking a list for
+ * Class that offers utility methods for the Simulated Annealing algorithm.
+ * These methods include switchting two vertices in a list, checking a list for
  * validness in a given matrix, calculating the costs of a tour with a given
  * matrix, and copying a list to a new list object.
  * 
@@ -15,14 +15,15 @@ import java.util.List;
 public class Utility {
 
 	/**
-	 * Switches vertex at the index in the list with its upper neighbor.
+	 * Switches two vertices witht the given indices. Value at index r will be
+	 * at index k and vice versa.
 	 * 
 	 * @param s0
 	 *            Given list.
 	 * @param r
-	 *            Given index.
+	 *            Given index one.
 	 * @param k
-	 *            Given index.
+	 *            Given index two.
 	 * @return The list with the switched vertices.
 	 */
 	protected static List<Integer> switchTwo(List<Integer> s0, int r, int k) {
@@ -44,19 +45,20 @@ public class Utility {
 	 * @return True if it the tour is valid, false if not.
 	 */
 	public static boolean isValid(List<Integer> newSolution, int[][] A) {
-		//only one node between start and stop
-		if(newSolution.size()==1){
-			if(A[0][1] == -1|| A[1][2] == -1){
+		// only one node between start and stop
+		if (newSolution.size() == 1) {
+			// no valid solution for this three node instance?
+			if (A[0][1] == -1 || A[1][2] == -1) {
 				return false;
-			} else{
+			} else {
 				return true;
 			}
 		}
-		
-		
+
 		for (int i = 1; i < newSolution.size(); i++) {
 			for (int j = 0; j < i; j++) {
-				// check if another vertex has to be visited before
+				// Checks for every node, whether a following node has to be
+				// visited before.
 				if (A[newSolution.get(j)][newSolution.get(i)] == -1)
 					return false;
 			}
@@ -77,16 +79,16 @@ public class Utility {
 	 */
 	protected static int cost(List<Integer> tour, int[][] A) {
 		int distance = 0;
-		
-		//cost of start to first vertex in tour.
+
+		// cost of start to first vertex in tour.
 		distance += A[0][tour.get(0)];
-		
-		//cost of tour.
+
+		// cost of tour.
 		for (int i = 0; i < tour.size() - 1; i++) {
 			distance += A[tour.get(i)][tour.get(i + 1)];
 		}
-		
-		//cost of last vertex in tour to end vertex.
+
+		// cost of last vertex in tour to end vertex.
 		distance += A[tour.get(tour.size() - 1)][A.length - 1];
 		return distance;
 	}

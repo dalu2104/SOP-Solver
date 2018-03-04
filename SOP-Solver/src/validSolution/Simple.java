@@ -5,8 +5,9 @@ import java.util.List;
 
 /**
  * Add simple algorithm that solves an SOP problem in indefinite runtime.
- * MODIFIED BRUTE-FORCE-ALGORITHMN FROM recursiveBruteForce. Detects instances with no valid solution and will return null.
- * Also picks its next vertex Greedy style.
+ * MODIFIED BRUTE-FORCE-ALGORITHMN FROM recursiveBruteForce. Detects instances
+ * with no valid solution and will return null. Also picks its next vertex
+ * Greedy style.
  * 
  * @author D. LUCAS
  *
@@ -19,7 +20,7 @@ public class Simple {
 	 * Finds the valid Solution for a given SOP-Instance.
 	 * 
 	 * @param A
-	 *            given MAtrix
+	 *            given Matrix
 	 * @return a result as List of node-numbers. Or null, if no valid solution
 	 *         was found.
 	 */
@@ -58,7 +59,8 @@ public class Simple {
 		// distance from current node to node at specified index.
 		int[] distance = new int[DIM];
 		boolean invalid = initializeDistance(distance, current);
-		// reached dead end. current last vertex has some unfulfilled dependencies. Jump out of this loop.
+		// reached dead end. current last vertex has some unfulfilled
+		// dependencies. Jump out of this loop.
 		if (invalid) {
 			return null;
 		}
@@ -104,10 +106,16 @@ public class Simple {
 
 	}
 
-	/** Initializes the distance array according to our current last vertex in list. From this last vertex, calculates distance with the help of the matrix.
- 	 * 
-	 * @param distance Array that saves the distance to the vertex at the index.
-	 * @param list Contains the vertex we are looking at, at the last available index.
+	/**
+	 * Initializes the distance array according to our current last vertex in
+	 * list. From this last vertex, calculates distance with the help of the
+	 * matrix.
+	 * 
+	 * @param distance
+	 *            Array that saves the distance to the vertex at the index.
+	 * @param list
+	 *            Contains the vertex we are looking at, at the last available
+	 *            index.
 	 * @return True, if there is an unfulfilled dependency and false otherwise.
 	 */
 	private static boolean initializeDistance(int[] distance, List<Integer> list) {
@@ -121,11 +129,15 @@ public class Simple {
 		}
 		return false;
 	}
-	
-	/** Initializes the visited array. Sets array to true, if node is already in the list.
+
+	/**
+	 * Initializes the visited array. Sets array to true, if node is already in
+	 * the list.
 	 * 
-	 * @param visited	Array to be initialized.
-	 * @param list	List that contains all nodes that have been visited.
+	 * @param visited
+	 *            Array to be initialized.
+	 * @param list
+	 *            List that contains all nodes that have been visited.
 	 */
 	private static void initializeVisited(boolean[] visited, List<Integer> list) {
 		for (int i : list) {
@@ -133,10 +145,13 @@ public class Simple {
 		}
 	}
 
-	/** Tells us whether there is another vertex that can be visited.
+	/**
+	 * Tells us whether there is another vertex that can be visited.
 	 * 
-	 * @param visited Array that tells us, if there is another vertex to be visited.
-	 * @return Returns true, if we can visit another vertex, and false otherwise.
+	 * @param visited
+	 *            Array that tells us, if there is another vertex to be visited.
+	 * @return Returns true, if we can visit another vertex, and false
+	 *         otherwise.
 	 */
 	private static boolean visitable(boolean[] visited) {
 		for (int i = 0; i < visited.length; i++) {
