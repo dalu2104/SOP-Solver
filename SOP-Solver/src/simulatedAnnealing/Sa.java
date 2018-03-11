@@ -25,11 +25,12 @@ public class Sa {
 	private static Random generator = new Random();
 
 	/**
-	 * Returns optimal solution for given matrix and asks the user for his
-	 * input, in case this method is called with defaultMode = false.
+	 * Returns a solution for given matrix. Executes an algorithm according to
+	 * choice of user. Algorithm can be executed with default values, or with
+	 * user given values.
 	 * 
 	 * @param matrix
-	 *            Given matrix for the SOP problem.
+	 *            Given matrix for the Sequential ordering problem.
 	 * @param defaultMode
 	 *            Indicates whether this method was called in default mode or
 	 *            not. True, if default method is called. False, otherwise.
@@ -41,20 +42,21 @@ public class Sa {
 		ExeTimeSolutionCost returner = new ExeTimeSolutionCost();
 		// check if matrix contains more than just Start and stop vertex. No
 		// solution needed otherwise. (Return empty list).
-		if(matrix.length == 2){
+		if (matrix.length == 2) {
 			returner.setSolution(new ArrayList<Integer>());
 			return returner;
-		// only one node between start and end vertex. 
-		}else if(matrix.length == 3){
+			// only one node between start and end vertex.
+		} else if (matrix.length == 3) {
 			returner.setSolution(new ArrayList<Integer>());
-			//add only vertex and check for validness.
+			// add only vertex and check for validness.
 			returner.getSolution().add(1);
-			if(!Utility.isValid(returner.getSolution(), matrix)){
-			returner.setSolution(null);				
+			if (!Utility.isValid(returner.getSolution(), matrix)) {
+				// If invalid, return empty list.
+				returner.setSolution(null);
 			}
 			return returner;
 		}
-		
+
 		// variable Initialization.
 		A = matrix;
 		long startTime = 0;
@@ -65,24 +67,25 @@ public class Sa {
 		// Executing algorithm according to user and calculating execution
 		// time.
 		if (defaultMode) {
-			// execution and stopping of execution time.
+			// Default mode, execution and stopping of execution time.
 			startTime = TimeStartAndStop.startTime();
 			returner = simulatedAnnealing1();
 			returner.setTimeForExecution(TimeStartAndStop.stopTime(startTime));
 		} else {
-			// input preparation.
+			// User input was chosen. Input preparation.
 			InputStreamReader in = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(in);
 
 			try {
+				// Choosing starting temperature.
 				System.out.println("Enter temperature.");
 				temp = Double.parseDouble(br.readLine());
 
-				// temperature decrement
+				// Choosing temperature decrement.
 				System.out.println("Enter temperature decrementation.");
 				tempDecr = Double.parseDouble(br.readLine());
 
-				// iterations
+				// Choosing number of iterations.
 				System.out.println("Enter amount of iterations.");
 				itera = Integer.parseInt(br.readLine());
 			} catch (NumberFormatException | IOException e) {
@@ -90,7 +93,7 @@ public class Sa {
 				return null;
 			}
 
-			// execution and stopping of execution time.
+			// User input values execution and stopping of execution time.
 			startTime = TimeStartAndStop.startTime();
 			returner = simulatedAnnealing2(temp, tempDecr, itera);
 			returner.setTimeForExecution(TimeStartAndStop.stopTime(startTime));
@@ -100,19 +103,20 @@ public class Sa {
 
 	// DEFAULT MODE SA METHOD
 	/**
-	 * Default mode, no user input for parameters. Returns a optimal solution as
-	 * a list according to the given restrictions inside the matrix.
+	 * Executes algorithm in default mode, with parameters that were chosen by
+	 * the developer. Returns a solution as a list according to the given
+	 * restrictions inside the matrix.
 	 * 
 	 * @return An tour with minimal costs, as found in the process of Simulated
 	 *         Annealing.
 	 */
 	private static ExeTimeSolutionCost simulatedAnnealing1() {
-		// in Order to start, we need a valid solution
-		// BEWARE S DOES NOT CONTAIN START AND END VERTEX.
-		// getting a valid solution for start.
+		// in Order to start, we need a valid solution.
+		// BEWARE STARTING SOLUTION DOES NOT CONTAIN START AND END VERTEX.
 		// Saving the solution in extra objects, because this way, we need to
-		// calculate the costs for a solution only once
+		// calculate the costs for a solution only once.
 		ExeTimeSolutionCost s0 = new ExeTimeSolutionCost();
+		// The starting solution was found with a developed greedy algorithm.
 		s0.setSolution(Simple.firstIdea(A));
 		// check if there is a valid solution to the problem, if not the greedy
 		// algorithm would tell us.
@@ -136,11 +140,11 @@ public class Sa {
 		} else {
 			kmax = 120 * 100 * 100;
 		}
-		//Bigger instances should cool down slower.
+		// Bigger instances should cool down slower.
 		double tempDecr;
-		if(n<55){
+		if (n < 55) {
 			tempDecr = 0.00001;
-		} else{
+		} else {
 			tempDecr = 0.000001;
 		}
 
@@ -174,16 +178,17 @@ public class Sa {
 		return bestSolution;
 	}
 
-	// USER INPUT SA METHOD
+	// USER INPUT SA METHOD. Similar to the default mode method, except the
+	// parameters that are given through the method are used.
 	/**
-	 * Called with user input parameters. Returns a optimal solution as a list
-	 * according to the given restrictions inside the matrix.
+	 * Called with user input parameters. Returns a solution as a list according
+	 * to the given restrictions inside the matrix.
 	 * 
 	 * @return An tour with minimal costs, as found in the process of Simulated
 	 *         Annealing.
 	 */
 	private static ExeTimeSolutionCost simulatedAnnealing2(double userTemp, double userTempDecr, int userMaxIt) {
-		// in Order to start, we need a valid solution
+		// in Order to start, we need a valid solution (found by Greedy.
 		// BEWARE S DOES NOT CONTAIN START AND END VERTEX.
 		// getting a valid solution for start.
 		// Saving the solution in extra objects, because this way, we need to
@@ -272,8 +277,6 @@ public class Sa {
 	 */
 	private static double temperature(double T, double step) {
 		// T can only be reduced if its above zero.
-		// due to the calculation of the temperature, we would never hit zero,
-		// so initiating a random treshold to simulate zero.
 		if (T == 0) {
 			return T;
 		}
@@ -284,7 +287,7 @@ public class Sa {
 
 	/**
 	 * Finds a random valid neighbor of the given list s0. By switching two
-	 * random vertices that are next to each other in the list.
+	 * random vertices in the list.
 	 * 
 	 * @param s0
 	 *            Given valid solution for SOP problem.

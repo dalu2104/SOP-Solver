@@ -39,7 +39,7 @@ public class UtilityTest {
 		pathToTestInstances = path;
 	}
 
-	//Method switchTwo.
+	// Method switchTwo.
 	@Test
 	public void switchTwoTest() {
 		List<Integer> testList = new ArrayList<Integer>();
@@ -52,7 +52,7 @@ public class UtilityTest {
 		assertEquals(1, testList.get(1).intValue());
 	}
 
-	//Method isValid.
+	// Method isValid.
 	@Test
 	public void isValidTest() {
 		matrix = parse(pathToTestInstances + "esc07.sop");
@@ -81,10 +81,10 @@ public class UtilityTest {
 		assertTrue(Utility.isValid(listTrue, matrix));
 		assertFalse(Utility.isValid(listFalse, matrix));
 	}
-	
-	//Method cost.
+
+	// Method cost.
 	@Test
-	public void costTest(){
+	public void costTest() {
 		matrix = parse(pathToTestInstances + "esc07.sop");
 		List<Integer> listCost = new ArrayList<Integer>();
 		listCost.add(1);
@@ -94,19 +94,19 @@ public class UtilityTest {
 		listCost.add(7);
 		listCost.add(6);
 		listCost.add(5);
-		
+
 		assertEquals(calculate(matrix, listCost), Utility.cost(listCost, matrix));
 	}
-	
-	//Method copyList.
+
+	// Method copyList.
 	@Test
-	public void copyListTest(){
+	public void copyListTest() {
 		List<Integer> listToCopy = new ArrayList<Integer>();
 		List<Integer> listToCopyTo = new ArrayList<Integer>();
-		
+
 		listToCopy.add(1);
 		listToCopyTo = Utility.copyList(listToCopy);
-		
+
 		assertEquals(listToCopy.get(0), listToCopyTo.get(0));
 	}
 

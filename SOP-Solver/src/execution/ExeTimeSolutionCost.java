@@ -67,18 +67,21 @@ public class ExeTimeSolutionCost {
 	public void setSolution(List<Integer> solution) {
 		this.solution = solution;
 	}
-	
-	/** Gets the cost for the solution in this object.
+
+	/**
+	 * Gets the cost for the solution in this object.
 	 * 
-	 * @return	Cost of the tour saved in solution.
+	 * @return Cost of the tour saved in solution.
 	 */
 	public int getCost() {
 		return cost;
 	}
 
-	/**  Sets cost for this solution in this specified object.
+	/**
+	 * Sets cost for this solution in this specified object.
 	 * 
-	 * @param cost The cost of the solution.
+	 * @param cost
+	 *            The cost of the solution.
 	 */
 	public void setCost(int cost) {
 		this.cost = cost;

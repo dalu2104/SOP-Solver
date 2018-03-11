@@ -54,7 +54,7 @@ public class SaTest {
 		assertEquals(0, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
 	}
 
-  	@Test
+	@Test
 	public void onlyOnePathTest() {
 		matrix = parse(pathToTestInstances + "zOnlyOnePath.sop");
 		assertEquals(6, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
@@ -71,13 +71,13 @@ public class SaTest {
 		matrix = parse(pathToTestInstances + "zStartStopDistances.sop");
 		assertEquals(3, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
 	}
-	
+
 	@Test
 	public void oneNodeExlStartStopTest() {
 		matrix = parse(pathToTestInstances + "zOneNodeExlStartStop.sop");
 		assertEquals(3, calculate(matrix, Sa.simulatedAnnealing(matrix, true).getSolution()));
 	}
-	
+
 	@Test
 	public void sopInstancesTest() {
 		matrix = parse(pathToTestInstances + "esc07.sop");
@@ -87,7 +87,7 @@ public class SaTest {
 		assertNotNull(Sa.simulatedAnnealing(matrix, true));
 	}
 
-	//////////////////////////HELPING METHODS
+	////////////////////////// HELPING METHODS
 	// Calls the Parser that the parser that the main-class uses.
 	private int[][] parse(String file) {
 		int[][] matrix;
@@ -109,4 +109,3 @@ public class SaTest {
 	}
 
 }
-
