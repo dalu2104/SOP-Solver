@@ -41,99 +41,67 @@ public class GenAlgTest {
 		pathToTestInstances = path;
 	}
 	
-	@Test(expected = FileNotFoundException.class)
-	public void noRealFileTest(){
-		
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "noRealFile.sop");
-	}
-	
 	@Test(expected = IllegalArgumentException.class)
 	public void dimensionTooBigTest(){
 		
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zDimensionTooBig.sop");
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void dimensionTooSmallTest(){
-		
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zDimensionTooSmall.sop");
+		int[][] matrix = parse(pathToTestInstances + "zDimensionTooBig.sop");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void emptyTest() {
 
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zEmpty.sop");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void noMatrixTest() {
-
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zNoMatrix.sop");
+		int[][] matrix = parse(pathToTestInstances + "zEmpty.sop");
 	}
 
 	@Test
 	public void noPathTest() {
 
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zNoPath.sop");
+		int[][] matrix = parse(pathToTestInstances + "zNoPath.sop");
 		assertNull(StartGenAlg.runAlg(matrix));
 	}
 
 	@Test
 	public void nullTest() {
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zNull.sop");
+		int[][] matrix = parse(pathToTestInstances + "zNull.sop");
 		assertEquals(0, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
 	
 	@Test
 	public void oneNodeExlStartStopTest() {
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zOneNodeExlStartStop.sop");
+		int[][] matrix = parse(pathToTestInstances + "zOneNodeExlStartStop.sop");
 		assertEquals(3, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
 	
 	@Test
 	public void oneNodeInclStartStopTest() {
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zOneNodeInclStartStop.sop");
+		int[][] matrix = parse(pathToTestInstances + "zOneNodeInclStartStop.sop");
 		assertNull(StartGenAlg.runAlg(matrix));
 	}
 
 	@Test
 	public void onlyOnePathTest() {
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zOnlyOnePath.sop");
+		int[][] matrix = parse(pathToTestInstances + "zOnlyOnePath.sop");
 		assertEquals(6, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
 
 	@Test
 	public void onlyStartStopTest() {
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zOnlyStartStop.sop");
+		int[][] matrix = parse(pathToTestInstances + "zOnlyStartStop.sop");
 		assertEquals(5, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
 
 	@Test
 	public void startStopDistancesTest() {
-		int[][] matrix;
-		matrix = parse(pathToTestInstances + "zStartStopDistances.sop");
+		int[][] matrix = parse(pathToTestInstances + "zStartStopDistances.sop");
 		assertEquals(3, calculate(matrix, StartGenAlg.runAlg(matrix)));
 	}
 
 	@Test
 	public void sopInstancesTest() {
-		int[][] matrix;
-
-		matrix = parse(pathToTestInstances + "esc07.sop");
+		int[][] matrix = parse(pathToTestInstances + "esc07.sop");
 		assertNotNull(StartGenAlg.runAlg(matrix));
 
-		matrix = parse(pathToTestInstances + "br17.10.sop");
+		matrix = parse(pathToTestInstances + "esc25.sop");
 		assertNotNull(StartGenAlg.runAlg(matrix));
 	}
 

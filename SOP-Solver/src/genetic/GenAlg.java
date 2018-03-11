@@ -207,9 +207,8 @@ public class GenAlg {
 	private double[] rateGeneration(int[][] generation, int[][] matrix) {
 		double[] fitness = new double[genSize];
 
-		/*
-		 * Current Fitness-function is: 			   1
-		 * 								----------------------------- * C
+		/*											  1
+		 * Current Fitness-function is: ----------------------------- * C
 		 * 								  length of the path to rate
 		 * 															 |----| -> only if the path is valid
 		 */
