@@ -147,7 +147,7 @@ public class Exe {
 				break;
 			case 9:
 				startTime = TimeStartAndStop.startTime();
-				solution = DynamicSOP.solveDynamic(matrix);
+				solution = DynamicSOPSolver.solve(matrix);
 				elapsedTime = TimeStartAndStop.stopTime(startTime);
 				break;
 			default:
