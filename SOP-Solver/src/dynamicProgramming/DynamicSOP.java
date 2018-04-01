@@ -1,10 +1,7 @@
 package dynamicProgramming;
 
 import java.util.ArrayList;
-
 import java.util.List;
-
-
 
 public class DynamicSOP {
 
@@ -75,7 +72,7 @@ public class DynamicSOP {
 		// create boolean array to represent sets of vertices and a variable for
 		boolean[] binSet = new boolean[v];
 		int binVal = 0;
-		// begin with sets of Mächtigkeit 2
+		// begin with sets of Maechtigkeit 2
 		int m = 2;
 		init(binSet, m);
 	

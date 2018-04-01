@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.List;
 
 import convertSOPFileToArray.Parser;
-import dynamicProgramming.DynamicSOP;
+import dynamicProgramming.DynamicSOPSolver;
 import genetic.StartGenAlg;
 import simulatedAnnealing.Sa;
 import tryAll.RecursiveBruteForce;

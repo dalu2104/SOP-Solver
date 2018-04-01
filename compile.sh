@@ -19,5 +19,7 @@ javac -d build -cp build $PWD/SOP-Solver/src/genetic/GenAlg.java
 javac -d build -cp build $PWD/SOP-Solver/src/genetic/StartGenAlg.java
 
 javac -d build -cp build $PWD/SOP-Solver/src/dynamicProgramming/DynamicSOP.java
+javac -d build -cp build $PWD/SOP-Solver/src/dynamicProgramming/DynamicSOPLists.java
+javac -d build -cp build $PWD/SOP-Solver/src/dynamicProgramming/DynamicSOPSolver.java
 
 javac -d build -cp build $PWD/SOP-Solver/src/execution/Exe.java
