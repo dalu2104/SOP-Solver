@@ -18,6 +18,7 @@ javac -d build -cp build "%~dp0\SOP-Solver\src\genetic\UsefulMethods.java"
 javac -d build -cp build "%~dp0\SOP-Solver\src\genetic\GenAlg.java"
 javac -d build -cp build "%~dp0\SOP-Solver\src\genetic\StartGenAlg.java"
 
+javac -d build -cp build "%~dp0\SOP-Solver\src\dynamicProgramming\Tour.java"
 javac -d build -cp build "%~dp0\SOP-Solver\src\dynamicProgramming\DynamicSOP.java"
 javac -d build -cp build "%~dp0\SOP-Solver\src\dynamicProgramming\DynamicSOPLists.java"
 javac -d build -cp build "%~dp0\SOP-Solver\src\dynamicProgramming\DynamicSOPSolver.java"
