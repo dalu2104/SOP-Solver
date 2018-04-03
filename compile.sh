@@ -1,5 +1,5 @@
 mkdir build
-javac -d build $PWD/SOP-Solver/src/convertSOPFileToArray/parser.java
+javac -d build $PWD/SOP-Solver/src/convertSOPFileToArray/Parser.java
 
 javac -d build $PWD/SOP-Solver/src/execution/TimeStartAndStop.java
 javac -d build $PWD/SOP-Solver/src/execution/ExeTimeSolutionCost.java
@@ -9,7 +9,7 @@ javac -d build $PWD/SOP-Solver/src/validSolution/OneSolution.java
 javac -d build $PWD/SOP-Solver/src/validSolution/Simple.java
 
 javac -d build -cp build $PWD/SOP-Solver/src/tryAll/Permutations.java
-javac -d build $PWD/SOP-Solver/src/tryAll/recursiveBruteForce.java
+javac -d build $PWD/SOP-Solver/src/tryAll/RecursiveBruteForce.java
 
 javac -d build -cp build $PWD/SOP-Solver/src/simulatedAnnealing/Utility.java
 javac -d build -cp build $PWD/SOP-Solver/src/simulatedAnnealing/Sa.java
