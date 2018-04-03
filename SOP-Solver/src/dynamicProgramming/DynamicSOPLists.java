@@ -231,8 +231,6 @@ public class DynamicSOPLists {
 			}
 			
 		} else {
-
-			System.out.println("Test");
 			for (int i = 0; i < tours_1.size(); i++) {
 				if(!tours_1.get(i).isEmpty())
 				for (int j = 0; j < tours_1.get(i).size(); j++) {

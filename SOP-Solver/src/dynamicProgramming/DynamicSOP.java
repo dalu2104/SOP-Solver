@@ -96,13 +96,13 @@ public class DynamicSOP {
 							if (matrix[j + 1][i + 1] == -1)
 								valid = false;
 					}
-					// wenn das Set so zulässig ist, dass Tour in i enden kann
+					// wenn das Set so zulaessig ist, dass Tour in i enden kann
 					if (valid) {
 					
-						// lösche knoten aus set für subtour
+						// loesche knoten aus set fuer subtour
 						binSet[i] = false;
 						tours[i][binVal] = minSubtour(binVal - Math.pow(2, i), matrix, tours, i, binSet);
-						// füge wieder hinzu
+						// fuege wieder hinzu
 						binSet[i] = true;
 					} else
 						tours[i][binVal] = inf;
